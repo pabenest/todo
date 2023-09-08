@@ -1,9 +1,9 @@
-import { input } from '@inquirer/prompts';
+import { input } from "@inquirer/prompts";
 
 async function main() {
-    const answer = await input({ message: 'Enter your name' });
+  const answer = await input({ message: "Enter your name" });
 
-    console.log(`Hello ${answer}`);
+  console.log(`Hello ${answer}`);
 }
 
-main();
+void main();

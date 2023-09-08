@@ -1,0 +1,41 @@
+{
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.fixAll": true,
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "typescript.preferences.quoteStyle": "single",
+  // -----------
+  // à ajouter en configuration personnelle normalement
+  // -----------
+  "typescript.surveys.enabled": false, // désactive les sondages
+  "telemetry.telemetryLevel": "off", // désactive les rapports de télémétrie
+  "files.autoSave": "onFocusChange", // sauvegarde automatique à la perte du focus
+  "typescript.updateImportsOnFileMove.enabled": "always", // mise à jour des imports lors d'un déplacement de fichier
+  "editor.wordBasedSuggestions": false, // désactive les suggestions de mots (laisse uniquement les suggestions de code et de snippets)
+  "editor.quickSuggestions": {
+    "comments": "on",
+    "strings": "on",
+    "other": "on"
+  }, // active les suggestions dans les commentaires et les chaînes de caractères
+  "editor.snippetSuggestions": "bottom", // affiche les suggestions de snippets en bas de la liste
+  "workbench.iconTheme": "vscode-icons", // icônes des fichiers
+  "editor.formatOnPaste": true, // formatage du code lors d'un copier/coller
+  "editor.formatOnSave": true, // formatage du code à la sauvegarde
+  // "editor.codeActionsOnSave": {
+  //   "source.fixAll": true,
+  // }, // exécute les actions de correction de code à la sauvegarde
+  "eslint.format.enable": true, // formatage du code par ESLint
+}
