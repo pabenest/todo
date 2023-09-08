@@ -71,5 +71,7 @@ module.exports = {
     "typescript-sort-keys/interface": "error",
     "typescript-sort-keys/string-enum": "error",
     "@typescript-eslint/no-namespace": "off",
+    // handled by tsc already
+    "import/no-unresolved": "off",
   }
 };
