@@ -1,0 +1,28 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+
+# dependencies
+node_modules
+
+# testing
+coverage/
+
+# misc
+.DS_Store
+*.pem
+.history
+.idea
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# env files
+.env
+
+# typescript
+*.tsbuildinfo
+
+dist/*
+!**/.gitkeep
