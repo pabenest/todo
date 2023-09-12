@@ -3,6 +3,7 @@ import { input, select } from "@inquirer/prompts";
 
 const todos: Todo[] = [];
 
+// coucou
 const TRUE = true;
 
 interface TypeWithValue<T> {
