@@ -1,210 +1,174 @@
-import { input } from '@inquirer/prompts';
-import checkbox, { Separator } from '@inquirer/checkbox';
-import { select } from '@inquirer/prompts';
-import { listenerCount } from 'process';
-import { inflateRaw } from 'zlib';
+import checkbox from "@inquirer/checkbox";
+import { input, select } from "@inquirer/prompts";
 
-let todos: Todo[] = [];
+const todos: Todo[] = [];
 
+const TRUE = true;
 
-type EtatTodo = {
-    value:number;
-    name:string;
-    description:string;
+interface TypeWithValue<T> {
+  value: T;
 }
 
-let etatTodos : EtatTodo[] = [
-    {value:1, name:"A Faire", description:"Todo qui vient d\'être initiée"},
-    {value:2, name:"A Completer", description:"Todo toujours en cours"},
-    {value:3, name:"Terminé", description:"Todo qui est archivée"}
-]
-
-type Todo = {
-    value:string;
-    etat:EtatTodo;
+interface EtatTodo extends TypeWithValue<number> {
+  description: string;
+  name: string;
 }
 
-type EntreeMenu  = {
-    name:string;
-    value:number;
-    description:string;
+const etatTodos: EtatTodo[] = [
+  { value: 1, name: "A Faire", description: "Todo qui vient d'être initiée" },
+  { value: 2, name: "A Completer", description: "Todo toujours en cours" },
+  { value: 3, name: "Terminé", description: "Todo qui est archivée" },
+];
+
+interface Todo extends TypeWithValue<string> {
+  etat: EtatTodo;
 }
 
-let entreeLister : EntreeMenu[] = [{
-    name:"Lister", 
-    value:1,    
-    description: 'lister la todolist'},
-    {name:"Ajouter", 
-    value:2,
-    description: 'Ajouter une entrée'},
-    {name:"Supprimer", 
-    value:3,
-    description: 'Supprimer une entrée'},
-    {name:"changer l'état", 
-    value:4,
-    description: 'Changer l\'état d\'une ou plusieurs entrées'}
-]
+interface EntreeMenu extends TypeWithValue<number> {
+  description: string;
+  name: string;
+}
+
+const entreeLister: EntreeMenu[] = [
+  {
+    name: "Lister",
+    value: 1,
+    description: "lister la todolist",
+  },
+  { name: "Ajouter", value: 2, description: "Ajouter une entrée" },
+  { name: "Supprimer", value: 3, description: "Supprimer une entrée" },
+  { name: "changer l'état", value: 4, description: "Changer l'état d'une ou plusieurs entrées" },
+];
 
 async function main() {
-   
-    while(true) {
+  while (TRUE) {
+    const answer = await select({
+      message: "Choix de la todo list",
+      choices: entreeLister,
+    });
 
-        const answer = await select({
-            message: 'Choix de la todo list',
-            choices: entreeLister,
-        });
+    const entreeMenu = getEntreeMenu(answer);
 
-        let entreeMenu = getEntreeMenu(answer);
-
-          switch (entreeMenu.value) {
-            case 1:
-              lister()
-              break;
-            case 2:
-                await ajouter()                           
-                break;
-            case 3:  
-                await supprimer()
-                break;
-            case 4:  
-                await changeEtat()
-                break;    
-            default:
-              console.log(`Le choix :${answer} est impossible, veuillez taper 1, 2 ou 3.`);
-          }
-        }
-}
-
-main();
-
-
-async function lister() {
-    console.log("Lister " + texteTodos(todos));
-}
-
- //PLutot utiliser Arrays.find
-function getEntreeMenu(value : number) : EntreeMenu {
-
-    let retour: EntreeMenu = entreeLister[0];
-
-    for (let i = 0; i < entreeLister.length; i++) {
-       if (entreeLister[i].value ==value) {
-        retour = entreeLister[i];
+    switch (entreeMenu.value) {
+      case 1:
+        lister();
         break;
-       }
-    }
-    
-    return retour
-}
-
- //PLutot utiliser Arrays.find
-function getTodo(value : string) : Todo {
-
-    let retour: Todo = todos[0];
-
-    for (let i = 0; i < todos.length; i++) {
-       if (todos[i].value ==value) {
-        retour = todos[i];
+      case 2:
+        await ajouter();
         break;
-       }
-    }
-    
-    return retour
-}
-
- //PLutot utiliser Arrays.find
-function getEtat(value : number) : EtatTodo {
-
-    let retour: EtatTodo = etatTodos[0];
-
-    for (let i = 0; i < etatTodos.length; i++) {
-       if (etatTodos[i].value ==value) {
-        retour = etatTodos[i];
+      case 3:
+        await supprimer();
         break;
-       }
+      case 4:
+        await changeEtat();
+        break;
+      default:
+        console.log(`Le choix :${answer} est impossible, veuillez taper 1, 2 ou 3.`);
     }
-    
-    return retour
+  }
 }
 
-function texteTodos(todos: Todo[]) : string {
-   
-    return '[' + JSON.stringify(todos) +']'    
-    //return '[' + todos.join('-') +']'
+void main();
+
+function lister() {
+  console.log("Lister " + texteTodos(todos));
 }
 
-async function ajouter()
- {
-    const param = await input({ message: 'Texte à ajouter:' });
-    todos.push({value:param, etat:etatTodos[0]})
-    //console.log('Ajouter ' + param);
- }
+function getEntreeMenu(value: number): EntreeMenu | null {
+  return entreeLister.find(x => x.value === value) ?? null;
+}
 
- async function supprimer()
- {
-   
-    let message : string = texteTodos(todos) + 'Texte à supprimer, donner son numéro: ';
-    const del : string = await input({ message});
-    
-    let index : number = parseInt(del)
+function getTodo(value: string): Todo {
+  let retour: Todo;
+  const temp = todos.find(x => x.value === value);
+  if (temp === undefined) {
+    throw new Error("La liste ne contient pas l'entrée demandée.");
+  } else {
+    retour = temp;
+  }
 
-    if (isNaN(index)) {
-        throw new Error("Le numéro renseigné n'est pas cohérent.")
-    } else {
+  return retour;
+}
 
+function getValue<T>(myElement: TypeWithValu<T>): EtatTodo {
+  let retour: EtatTodo;
+  const temp = etatTodos.find(x => x.value === myElement.value);
+  if (temp === undefined) {
+    throw new Error("La liste ne contient pas l'entrée demandée.");
+  } else {
+    retour = temp;
+  }
 
+  return retour;
+}
 
-        todos.splice(index, 1)
-    }
+function texteTodos(todos: Todo[]): string {
+  return "[" + JSON.stringify(todos) + "]";
+  //return '[' + todos.join('-') +']'
+}
 
-    todos.splice(index, 1)
-       
- }
+async function ajouter() {
+  const param = await input({ message: "Texte à ajouter:" });
+  todos.push({ value: param, etat: etatTodos[0] });
+  //console.log('Ajouter ' + param);
+}
 
- async function changeEtat(){
+async function supprimer() {
+  const message: string = texteTodos(todos) + "Texte à supprimer, donner son numéro: ";
+  const del: string = await input({ message });
 
-        lister()
+  const index: number = parseInt(del);
 
-        //Choix du futur état 
-        const choixEtat = await select({
-            message: 'Choix du futur état',
-            choices: etatTodos,
-        });
+  if (isNaN(index)) {
+    throw new Error("Le numéro renseigné n'est pas cohérent.");
+  } else {
+    todos.splice(index, 1);
+  }
 
-        //Selection des Todos a modifier
-        const choixTodos = await checkbox({
-            message: 'Choix du futur état',
-            choices: todosToChecboxType(todos),
-        });
+  todos.splice(index, 1);
+}
 
-        sauvegardeEtat(choixEtat, choixTodos);
- }
+async function changeEtat() {
+  lister();
 
- function sauvegardeEtat(futurEtat: number, todoValue :string[]) : void{
+  //Choix du futur état
+  const choixEtat = await select({
+    message: "Choix du futur état",
+    choices: etatTodos,
+  });
 
-    //on retrouve l'état.
-    let etat: EtatTodo = getEtat(futurEtat)
-    //on retrouve les todos.
-    for (let i = 0; i < todoValue.length; i++) {
-       let todo : Todo = getTodo(todoValue[i])
-       todo.etat = etat
-    }  
- }
+  //Selection des Todos a modifier
+  const choixTodos = await checkbox({
+    message: "Choix du futur état",
+    choices: todosToChecboxType(todos),
+  });
 
- //PLutot utiliser les map Arrays.map
- function todosToChecboxType(todos : Todo[]) : CheckboxType[] {
+  sauvegardeEtat(choixEtat, choixTodos);
+}
 
-    let checkboxTypes :CheckboxType[] = [];
+function sauvegardeEtat(futurEtat: number, todoValue: string[]): void {
+  //on retrouve l'état.
+  const etat: EtatTodo = getEtat(futurEtat);
+  //on retrouve les todos.
+  for (let i = 0; i < todoValue.length; i++) {
+    const todo: Todo = getTodo(todoValue[i]);
+    todo.etat = etat;
+  }
+}
 
-    for (let i = 0; i < todos.length; i++) {
-        checkboxTypes[i] = {name:todos[i].value + ' ' + todos[i].etat.name, value:todos[i].value, disabled:false}
-    }    
+//PLutot utiliser les map Arrays.map
+function todosToChecboxType(todos: Todo[]): CheckboxType[] {
+  const checkboxTypes: CheckboxType[] = [];
 
-    return checkboxTypes
- }
+  for (let i = 0; i < todos.length; i++) {
+    checkboxTypes[i] = { name: todos[i].value + " " + todos[i].etat.name, value: todos[i].value, disabled: false };
+  }
 
- type CheckboxType = {
-    name:string;
-    value:string;
-    disabled:boolean;
+  return checkboxTypes;
+}
+
+interface CheckboxType {
+  disabled: boolean;
+  name: string;
+  value: string;
 }
