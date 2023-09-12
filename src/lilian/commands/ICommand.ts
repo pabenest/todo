@@ -1,5 +1,5 @@
 export interface ICommand {
   description: string;
   name: string;
-  run(): Promise<void>;
+  run(): Promise<void> | void;
 }

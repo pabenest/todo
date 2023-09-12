@@ -14,6 +14,7 @@ async function main() {
         value: command.name,
       })),
     });
+    console.clear();
 
     const command = commands.find(command => command.name === choice);
 

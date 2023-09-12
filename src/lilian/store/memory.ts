@@ -10,17 +10,14 @@ export const memoryStore: IStore = {
       ...todo,
       id: index++,
     });
-    return Promise.resolve();
   },
   getAll() {
-    return Promise.resolve([...store]);
+    return [...store];
   },
   remove(id) {
     store = store.filter(todo => todo.id !== id);
-    return Promise.resolve();
   },
   toggle(id) {
     store[id].done = !store[id].done;
-    return Promise.resolve();
   },
 };
