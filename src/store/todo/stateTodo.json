@@ -2,16 +2,16 @@
   {
     "id": 1,
     "value": "A faire",
-    "default": true
+    "isDefault": true
   },
   {
     "id": 2,
     "value": "A compléter",
-    "default": false
+    "isDefault": false
   },
   {
     "id": 3,
     "value": "Terminé",
-    "default": false
+    "isDefault": false
   }
 ]

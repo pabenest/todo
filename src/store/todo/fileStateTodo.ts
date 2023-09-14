@@ -1,18 +1,15 @@
 import { readFile } from "fs/promises";
+import path from "path";
 
 import { config } from "../../config";
-import { type IStateTodo, type StateTodo } from "../../model/Todo";
+import { type IStateTodo } from "../../model/Todo";
 import { type IStateTodoStore } from "./IStateTodoStore";
 
-const STORE_FILE = config.store.filePath + "/store/state-todo/stateTodo.json";
+const STORE_FILE = path.resolve(config.rootPath, "src/store/todo/stateTodo.json");
 
 const storeStateTodo = async (): Promise<IStateTodo[]> => {
   try {
-    console.log(STORE_FILE);
-
-    // const state = JSON.parse(await readFile(STORE_FILE, "utf-8")) as IStateTodo[];
-    // return state;
-    return JSON.parse(await readFile(STORE_FILE, "utf-8")) as StateTodo[];
+    return JSON.parse(await readFile(STORE_FILE, "utf-8")) as IStateTodo[];
   } catch (error) {
     return [];
   }
@@ -25,7 +22,7 @@ const storeStateTodo = async (): Promise<IStateTodo[]> => {
 export const fileStateTodoStore: IStateTodoStore = {
   async getDefault() {
     const store = await storeStateTodo();
-    let stateTodo = store.find(x => x.default === true);
+    let stateTodo = store.find(x => x.isDefault === true);
 
     if (stateTodo === undefined) {
       stateTodo = store[0];

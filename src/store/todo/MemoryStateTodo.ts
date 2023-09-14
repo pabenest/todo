@@ -2,9 +2,9 @@ import { type IStateTodo } from "../../model/Todo";
 import { type IStateTodoStore } from "./IStateTodoStore";
 
 const storeStateTodo: IStateTodo[] = [
-  { id: 1, value: "A faire", default: true },
-  { id: 2, value: "A compléter", default: false },
-  { id: 3, value: "Terminé", default: false },
+  { id: 1, value: "A faire", isDefault: true },
+  { id: 2, value: "A compléter", isDefault: false },
+  { id: 3, value: "Terminé", isDefault: false },
 ];
 
 export const memoryStateTodoStore: IStateTodoStore = {
@@ -18,7 +18,7 @@ export const memoryStateTodoStore: IStateTodoStore = {
     throw new Error("No Method not implemented.");
   },
   getDefault() {
-    let stateTodo = storeStateTodo.find(x => x.default === true);
+    let stateTodo = storeStateTodo.find(x => x.isDefault === true);
 
     if (stateTodo === undefined) {
       stateTodo = storeStateTodo[0];

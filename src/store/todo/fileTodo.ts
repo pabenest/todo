@@ -1,12 +1,12 @@
 import { readFile, writeFile } from "fs/promises";
+import path from "path";
 
-import { findId } from "../../common/model/WithId";
+import { getIncrement } from "../../common/model/WithId";
 import { config } from "../../config";
 import { type IStateTodo, type ITodo } from "../../model/Todo";
 import { type ITodoStore } from "./ITodoStore";
 
-const index = 0;
-const STORE_FILE = config.store.filePath + "/store/todo/todo.json";
+const STORE_FILE = path.resolve(config.rootPath, "src/store/todo/todo.json");
 
 const getPersist = async (): Promise<ITodo[]> => {
   try {
@@ -17,13 +17,13 @@ const getPersist = async (): Promise<ITodo[]> => {
 };
 
 const saveStore = async (store: ITodo[]): Promise<void> => {
-  await writeFile(STORE_FILE, JSON.stringify(store));
+  await writeFile(STORE_FILE, JSON.stringify(store, null, 2));
 };
 
 export const fileTodoStore: ITodoStore = {
   async add(todo: ITodo): Promise<void> {
     const store = await this.getAll();
-    const id: number = findId(store);
+    const id = getIncrement(store);
     store.push({ ...todo, id });
     await saveStore(store);
   },
