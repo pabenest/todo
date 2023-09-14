@@ -1,9 +1,8 @@
 import { input } from "@inquirer/prompts";
 
-import { type Todo } from "../model/Todo";
-import { getStateTodoStore } from "../store/stateTodo";
-import { getTodoStore } from "../store/todo";
-import { type ICommand } from "./ICommand";
+import { type ITodo } from "../../model/Todo";
+import { getStateTodoStore, getTodoStore } from "../../store/todo";
+import { type ICommand } from "../ICommand";
 
 const todoStore = getTodoStore();
 const stateTodoStore = getStateTodoStore();
@@ -15,10 +14,10 @@ export const add: ICommand = {
     const text = await input({ message: "Entrez votre tâche" });
 
     const todo = {
-      id: 2,
+      id: -1,
       value: text,
-      state: stateTodoStore.getDefault(),
-    } as Todo;
+      state: await stateTodoStore.getDefault(),
+    } as ITodo;
 
     await todoStore.add(todo);
   },

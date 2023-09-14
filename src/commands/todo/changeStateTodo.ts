@@ -1,10 +1,8 @@
 import { checkbox, select } from "@inquirer/prompts";
 
-import { type StateTodo } from "../model/StateTodo";
-import { type Todo } from "../model/Todo";
-import { getStateTodoStore } from "../store/stateTodo";
-import { getTodoStore } from "../store/todo";
-import { type ICommand } from "./ICommand";
+import { type IStateTodo, type ITodo } from "../../model/Todo";
+import { getStateTodoStore, getTodoStore } from "../../store/todo";
+import { type ICommand } from "../ICommand";
 
 const todoStore = getTodoStore();
 const stateTodoStore = getStateTodoStore();
@@ -14,10 +12,10 @@ export const changeState: ICommand = {
   name: "changeState",
   async run() {
     const todoBdds = await todoStore.getAll();
-    const stateTodoBdds: StateTodo[] = await stateTodoStore.getAll();
+    const stateTodoBdds: IStateTodo[] = await stateTodoStore.getAll();
 
     //Choix du futur état
-    const newStateId = await select({
+    const newStateId: number = await select({
       message: "Choix du nouvel état",
       choices: stateTodoBdds.map(stateTodo => ({
         name: stateTodo.value,
@@ -36,12 +34,12 @@ export const changeState: ICommand = {
         })),
       });
 
-      const todos: Todo[] = [];
+      const todos: ITodo[] = [];
 
       if (newTodoIds) {
         for (const newTodoId of newTodoIds) {
           const todo = todoBdds.find(x => x.id === newTodoId);
-          if (todo) {
+          if (todo && todos) {
             todos.push(todo);
           }
         }

@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "value": "A faire",
+    "default": true
+  },
+  {
+    "id": 2,
+    "value": "A compléter",
+    "default": false
+  },
+  {
+    "id": 3,
+    "value": "Terminé",
+    "default": false
+  }
+]

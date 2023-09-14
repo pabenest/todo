@@ -1,7 +1,7 @@
-import { add } from "./add";
-import { changeState } from "./changeState";
-import { type ICommand } from "./ICommand";
-import { list } from "./list";
+import { type ICommand } from "../ICommand";
+import { add } from "./addTodo";
+import { changeState } from "./changeStateTodo";
+import { list } from "./listTodo";
 import { remove } from "./remove";
 
 export const commands: ICommand[] = [

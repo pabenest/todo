@@ -1,7 +1,7 @@
 import { checkbox } from "@inquirer/prompts";
 
-import { getTodoStore } from "../store/todo";
-import { type ICommand } from "./ICommand";
+import { getTodoStore } from "../../store/todo";
+import { type ICommand } from "../ICommand";
 
 const todoStore = getTodoStore();
 
@@ -19,6 +19,7 @@ export const remove: ICommand = {
       })),
     });
 
+    console.log(answers);
     for (const id of answers) {
       await todoStore.remove(id);
     }

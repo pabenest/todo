@@ -1,12 +1,16 @@
 import { select } from "@inquirer/prompts";
+import path from "path";
 
-import { commands } from "./commands";
+import { commands } from "./commands/todo";
+import { config } from "./config";
 
 const TRUE = true;
 
 async function main() {
   while (TRUE) {
-    const choice = await select({
+    console.log(config.store.filePath + "/store/stateTodo/stateTodo.json");
+    console.log("toto:" + path.resolve(config.store.filePath, "/store/stateTodo/stateTodo.json"));
+    const choice: string = await select({
       message: "Que voulez-vous faire ?",
       choices: commands.map(command => ({
         name: command.name,

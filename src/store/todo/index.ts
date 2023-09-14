@@ -1,31 +1,61 @@
 import { config, type StoreType } from "../../config";
-import { type Todo } from "../../model/Todo";
-import { type TypeTodo } from "../../model/TypeTodo";
+import { type IStateTodo, type ITodo } from "../../model/Todo";
+import { fileStateTodoStore } from "./fileStateTodo";
+import { fileTodoStore } from "./fileTodo";
+import { type IStateTodoStore } from "./IStateTodoStore";
 import { type ITodoStore } from "./ITodoStore";
+import { memoryStateTodoStore } from "./MemoryStateTodo";
 import { memoryTodoStore } from "./memoryTodo";
 
-class unimplementedTodoStore implements ITodoStore {
-  changeState(newState: TypeTodo, todos: TypeTodo[]): Promise<void> | void {
+class UnimplementedTodoStore implements ITodoStore {
+  changeState(): Promise<void> | void {
     throw new Error("Method not implemented.");
   }
-  add(instance: Omit<Todo, "id">): Promise<void> | void {
+  add(): Promise<void> | void {
     throw new Error("Method not implemented.");
   }
-  getAll(): Promise<Todo[]> | Todo[] {
+  getAll(): ITodo[] | Promise<ITodo[]> {
     throw new Error("Method not implemented.");
   }
-  remove(id: number): void {
+  remove(): void {
     throw new Error("Method not implemented.");
   }
 }
-const unimplemented = new unimplementedTodoStore();
+const unimplementedTodoStore = new UnimplementedTodoStore();
 
-const stores: Record<StoreType, ITodoStore> = {
+const todoStores: Record<StoreType, ITodoStore> = {
   memory: memoryTodoStore,
   // TODO: Implement the other stores
-  file: unimplemented,
-  db: unimplemented,
-  mock: unimplemented,
+  file: fileTodoStore,
+  db: unimplementedTodoStore,
+  mock: unimplementedTodoStore,
 };
 
-export const getTodoStore = (name = config.store.type): ITodoStore => stores[name] ?? unimplementedTodoStore;
+export const getTodoStore = (name = config.store.type): ITodoStore => todoStores[name] ?? unimplementedTodoStore;
+
+class UnimplementedStateTodoStore implements IStateTodoStore {
+  add(): Promise<void> | void {
+    throw new Error("Method not implemented.");
+  }
+  getAll(): IStateTodo[] | Promise<IStateTodo[]> {
+    throw new Error("Method not implemented.");
+  }
+  remove(): void {
+    throw new Error("Method not implemented.");
+  }
+  getDefault(): IStateTodo | Promise<IStateTodo> {
+    throw new Error("Method not implemented.");
+  }
+}
+const unimplementedStateTodoStore = new UnimplementedStateTodoStore();
+
+const stores: Record<StoreType, IStateTodoStore> = {
+  memory: memoryStateTodoStore,
+  // TODO: Implement the other stores
+  file: fileStateTodoStore,
+  db: unimplementedStateTodoStore,
+  mock: unimplementedStateTodoStore,
+};
+
+export const getStateTodoStore = (name = config.store.type): IStateTodoStore =>
+  stores[name] ?? unimplementedStateTodoStore;
