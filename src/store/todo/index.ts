@@ -2,6 +2,8 @@ import { config, type StoreType } from "../../config";
 import { type IStateTodo, type ITodo } from "../../model/Todo";
 import { fileStateTodoStore } from "./fileStateTodo";
 import { fileTodoStore } from "./fileTodo";
+import { fileWorkerStateTodoStore } from "./fileWorkerStateTodo";
+import { fileWorkerTodoStore } from "./fileWorkerTodo";
 import { type IStateTodoStore } from "./IStateTodoStore";
 import { type ITodoStore } from "./ITodoStore";
 import { memoryStateTodoStore } from "./MemoryStateTodo";
@@ -27,6 +29,7 @@ const todoStores: Record<StoreType, ITodoStore> = {
   memory: memoryTodoStore,
   // TODO: Implement the other stores
   file: fileTodoStore,
+  fileworker: fileWorkerTodoStore,
   db: unimplementedTodoStore,
   mock: unimplementedTodoStore,
 };
@@ -53,6 +56,7 @@ const stores: Record<StoreType, IStateTodoStore> = {
   memory: memoryStateTodoStore,
   // TODO: Implement the other stores
   file: fileStateTodoStore,
+  fileworker: fileWorkerStateTodoStore,
   db: unimplementedStateTodoStore,
   mock: unimplementedStateTodoStore,
 };
