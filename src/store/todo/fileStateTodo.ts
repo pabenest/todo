@@ -13,6 +13,11 @@ const storeStateTodo = async (): Promise<IStateTodo[]> => {
   } catch (error) {
     return [];
   }
+
+  // Version promise simple
+  // return readFile(STORE_FILE, "utf-8")
+  //   .then(result => JSON.parse(result) as IStateTodo[])
+  //   .catch(() => []);
 };
 
 // const saveStore = async (store: StateTodo[]): Promise<void> => {

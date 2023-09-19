@@ -1,18 +1,21 @@
 import { isMainThread, type MessagePort, parentPort, Worker } from "worker_threads";
 
+/**
+ * Message venant du Main en direction du Worker
+ */
 interface DefaultTravailleurMessage {
   command: string;
-  data?: unknown;
+  input?: unknown;
 }
 
 type ConfigInputs<TConfig, TCommand extends keyof TConfig> = TConfig[TCommand] extends (
   ...inputs: infer TInput
-) => infer _TOutput
+) => unknown
   ? TInput
   : never;
 
 type ConfigOutput<TConfig, TCommand extends keyof TConfig> = TConfig[TCommand] extends (
-  input: infer TInput,
+  ...args: unknown[]
 ) => infer TOutput
   ? TOutput
   : never;
@@ -44,12 +47,13 @@ export class Travailleur<TConfig> {
       });
     } else {
       Travailleur.assertInWorker(parentPort);
+      // Coeur principal du Worker
       parentPort.on("message", (message: DefaultTravailleurMessage) => {
         const configMethod = this.worker_instance[message.command as keyof TConfig] as (
           ...message: unknown[]
         ) => Promise<unknown>;
         void (async () => {
-          const response = await configMethod.apply(this.worker_instance, message.data as unknown[]);
+          const response = await configMethod.apply(this.worker_instance, message.input as unknown[]);
           this.postMessage(response);
         })();
       });
@@ -66,21 +70,21 @@ export class Travailleur<TConfig> {
     }
   }
 
+  /**
+   * Coeur principal du Main
+   */
   public run<TCommand extends keyof TConfig, TOutput extends UnboxPromise<ConfigOutput<TConfig, TCommand>>>(
     command: TCommand,
     ...input: ConfigInputs<TConfig, TCommand>
   ): Promise<TOutput> {
+    Travailleur.assertWorkingWorker(this.main_currentWorker);
     return new Promise<TOutput>((resolve, reject) => {
       Travailleur.assertWorkingWorker(this.main_currentWorker);
-      this.main_currentWorker.once("message", (message: TOutput) => {
-        resolve(message);
-      });
-      this.main_currentWorker.once("error", error => {
-        reject(error);
-      });
+      this.main_currentWorker.once("message", resolve);
+      this.main_currentWorker.once("error", reject);
       this.postMessage({
         command,
-        data: input,
+        input,
       });
     });
   }
