@@ -1,6 +1,8 @@
 {
   "extends": "@tsconfig/node20",
+  "declarationMap": true,
+  "sourceMap": true,
   "compilerOptions": {
-    "outDir": "./dist"
+    "outDir": "./dist",
   }
 }
