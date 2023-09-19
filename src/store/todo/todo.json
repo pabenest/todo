@@ -16,5 +16,14 @@
       "value": "A compléter",
       "isDefault": false
     }
+  },
+  {
+    "id": 3,
+    "value": "test3",
+    "state": {
+      "id": 1,
+      "value": "A faire",
+      "isDefault": true
+    }
   }
 ]

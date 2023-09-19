@@ -4,8 +4,10 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
+    "types": "nodemon src/types.ts",
     "dev": "nodemon src/index.ts",
-    "dev:lilian": "nodemon src/lilian/index.ts"
+    "dev:lilian": "nodemon src/lilian/index.ts",
+    "index": "nodemon src/index.js"
   },
   "author": "",
   "license": "ISC",
