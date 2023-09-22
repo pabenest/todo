@@ -8,6 +8,7 @@ export const list: ICommand = {
   name: "list",
   async run() {
     const todos = await store.getAll();
+    console.clear();
     console.table(
       todos.map(todo => ({
         id: todo.id,

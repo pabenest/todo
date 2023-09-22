@@ -1,6 +1,6 @@
 import { input } from "@inquirer/prompts";
 
-import { type ITodo } from "../../model/Todo";
+import { type TodoModel } from "../../model/Todo";
 import { getStateTodoStore, getTodoStore } from "../../store/todo";
 import { type ICommand } from "../ICommand";
 
@@ -17,7 +17,7 @@ export const add: ICommand = {
       id: -1,
       value: text,
       state: await stateTodoStore.getDefault(),
-    } as ITodo;
+    } as TodoModel;
 
     await todoStore.add(todo);
   },

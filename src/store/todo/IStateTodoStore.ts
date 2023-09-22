@@ -1,6 +1,6 @@
 import { type IStore } from "../../common/store/IStore";
-import { type IStateTodo } from "../../model/Todo";
+import { type StateTodoModel } from "../../model/Todo";
 
-export interface IStateTodoStore extends IStore<IStateTodo> {
-  getDefault(): IStateTodo | Promise<IStateTodo>;
+export interface IStateTodoStore extends IStore<StateTodoModel> {
+  getDefault(): Promise<StateTodoModel> | StateTodoModel;
 }

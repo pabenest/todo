@@ -2,14 +2,14 @@ import { readFile } from "fs/promises";
 import path from "path";
 
 import { config } from "../../config";
-import { type IStateTodo } from "../../model/Todo";
+import { type StateTodoModel } from "../../model/Todo";
 import { type IStateTodoStore } from "./IStateTodoStore";
 
 const STORE_FILE = path.resolve(config.rootPath, "src/store/todo/stateTodo.json");
 
-const storeStateTodo = async (): Promise<IStateTodo[]> => {
+const storeStateTodo = async (): Promise<StateTodoModel[]> => {
   try {
-    return JSON.parse(await readFile(STORE_FILE, "utf-8")) as IStateTodo[];
+    return JSON.parse(await readFile(STORE_FILE, "utf-8")) as StateTodoModel[];
   } catch (error) {
     return [];
   }
@@ -40,7 +40,7 @@ export const fileStateTodoStore: IStateTodoStore = {
   remove(): Promise<void> {
     throw new Error("Method not implemented.");
   },
-  async getAll(): Promise<IStateTodo[]> {
+  async getAll(): Promise<StateTodoModel[]> {
     return await storeStateTodo();
   },
 };

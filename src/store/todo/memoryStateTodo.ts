@@ -1,7 +1,7 @@
-import { type IStateTodo } from "../../model/Todo";
+import { type StateTodoModel } from "../../model/Todo";
 import { type IStateTodoStore } from "./IStateTodoStore";
 
-const storeStateTodo: IStateTodo[] = [
+const storeStateTodo: StateTodoModel[] = [
   { id: 1, value: "A faire", isDefault: true },
   { id: 2, value: "A compléter", isDefault: false },
   { id: 3, value: "Terminé", isDefault: false },
@@ -11,7 +11,7 @@ export const memoryStateTodoStore: IStateTodoStore = {
   add() {
     throw new Error("Method not implemented.");
   },
-  getAll(): IStateTodo[] {
+  getAll(): StateTodoModel[] {
     return [...storeStateTodo];
   },
   remove() {

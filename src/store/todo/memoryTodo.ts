@@ -1,14 +1,14 @@
-import { type IStateTodo, type ITodo } from "../../model/Todo";
+import { type StateTodoModel, type TodoModel } from "../../model/Todo";
 import { type ITodoStore } from "./ITodoStore";
 
 let index = 0;
-let storeTodo: ITodo[] = [];
+let storeTodo: TodoModel[] = [];
 
 export const memoryTodoStore: ITodoStore = {
-  add(todo: ITodo): void {
+  add(todo: TodoModel): void {
     storeTodo.push({ ...todo, id: index++ });
   },
-  changeState(newState: IStateTodo, todos: ITodo[]): void {
+  changeState(newState: StateTodoModel, todos: TodoModel[]): void {
     for (const iterator of todos) {
       const todo = todos.find(x => x.value === iterator.value) ?? null;
       if (todo) {
@@ -19,7 +19,7 @@ export const memoryTodoStore: ITodoStore = {
   remove(id: number): void {
     storeTodo = storeTodo.filter(x => id !== x.id);
   },
-  getAll(): ITodo[] | Promise<ITodo[]> {
+  getAll(): Promise<TodoModel[]> | TodoModel[] {
     return [...storeTodo];
   },
 };

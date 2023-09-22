@@ -1,6 +1,6 @@
 import { checkbox, select } from "@inquirer/prompts";
 
-import { type IStateTodo, type ITodo } from "../../model/Todo";
+import { type StateTodoModel, type TodoModel } from "../../model/Todo";
 import { getStateTodoStore, getTodoStore } from "../../store/todo";
 import { type ICommand } from "../ICommand";
 
@@ -12,7 +12,7 @@ export const changeState: ICommand = {
   name: "changeState",
   async run() {
     const todoBdds = await todoStore.getAll();
-    const stateTodoBdds: IStateTodo[] = await stateTodoStore.getAll();
+    const stateTodoBdds: StateTodoModel[] = await stateTodoStore.getAll();
 
     //Choix du futur état
     const newStateId: number = await select({
@@ -34,7 +34,7 @@ export const changeState: ICommand = {
         })),
       });
 
-      const todos: ITodo[] = [];
+      const todos: TodoModel[] = [];
 
       if (newTodoIds) {
         for (const newTodoId of newTodoIds) {

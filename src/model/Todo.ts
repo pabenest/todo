@@ -1,10 +1,10 @@
 import { type WithId } from "../common/model/WithId";
 
-export interface ITodo extends WithId {
-  state: IStateTodo;
+export interface TodoModel extends WithId {
+  state: StateTodoModel;
   value: string;
 }
-export interface IStateTodo extends WithId {
+export interface StateTodoModel extends WithId {
   isDefault: boolean;
   value: string;
 }
