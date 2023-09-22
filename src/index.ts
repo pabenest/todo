@@ -1,3 +1,5 @@
+import "reflect-metadata";
+
 import { select } from "@inquirer/prompts";
 
 import { commands } from "./commands/todo";

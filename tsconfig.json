@@ -4,5 +4,7 @@
   "sourceMap": true,
   "compilerOptions": {
     "outDir": "./dist",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
   }
 }
