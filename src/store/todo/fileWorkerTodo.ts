@@ -1,5 +1,5 @@
+import { Travailleur } from "../../common/Travailleur";
 import { type IStateTodo, type ITodo } from "../../model/Todo";
-import { Travailleur } from "../../Travailleur";
 import { fileTodoStore } from "./fileTodo";
 import { type ITodoStore } from "./ITodoStore";
 

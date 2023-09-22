@@ -1,10 +1,10 @@
 import path from "path";
 
-export type StoreType = "db" | "file" | "fileworker" | "fileWorkerThread" | "memory" | "memoryWorkerThread" | "mock";
+export type StoreType = "db" | "file" | "fileworker" | "memory" | "mock";
 
 export const config = {
   rootPath: path.resolve(__dirname, "../"),
   store: {
-    type: "fileWorkerThread" as StoreType,
+    type: "fileworker" as StoreType,
   },
 };

@@ -3,8 +3,6 @@ import { type IStateTodo, type ITodo } from "../../model/Todo";
 import { fileStateTodoStore } from "./fileStateTodo";
 import { fileTodoStore } from "./fileTodo";
 import { fileWorkerStateTodoStore } from "./fileWorkerStateTodo";
-import { fileWorkerThreadStateTodoStore } from "./fileWorkerThreadStateTodo";
-import { fileWorkerThreadTodoStore } from "./fileWorkerThreadTodo";
 import { fileWorkerTodoStore } from "./fileWorkerTodo";
 import { type IStateTodoStore } from "./IStateTodoStore";
 import { type ITodoStore } from "./ITodoStore";
@@ -32,8 +30,6 @@ const todoStores: Record<StoreType, ITodoStore> = {
   // TODO: Implement the other stores
   file: fileTodoStore,
   fileworker: fileWorkerTodoStore,
-  fileWorkerThread: fileWorkerThreadTodoStore,
-  memoryWorkerThread: unimplementedTodoStore,
   db: unimplementedTodoStore,
   mock: unimplementedTodoStore,
 };
@@ -61,8 +57,6 @@ const stores: Record<StoreType, IStateTodoStore> = {
   // TODO: Implement the other stores
   file: fileStateTodoStore,
   fileworker: fileWorkerStateTodoStore,
-  fileWorkerThread: fileWorkerThreadStateTodoStore,
-  memoryWorkerThread: unimplementedStateTodoStore,
   db: unimplementedStateTodoStore,
   mock: unimplementedStateTodoStore,
 };
