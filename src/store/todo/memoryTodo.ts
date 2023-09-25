@@ -1,12 +1,15 @@
+import { error } from "console";
+
+import { getIncrement } from "../../common/model/WithId";
 import { type StateTodoModel, type TodoModel } from "../../model/Todo";
 import { type ITodoStore } from "./ITodoStore";
 
-let index = 0;
 let storeTodo: TodoModel[] = [];
 
 export const memoryTodoStore: ITodoStore = {
   add(todo: TodoModel): void {
-    storeTodo.push({ ...todo, id: index++ });
+    const id = getIncrement(storeTodo);
+    storeTodo.push({ ...todo, id: id });
   },
   changeState(newState: StateTodoModel, todos: TodoModel[]): void {
     for (const iterator of todos) {
@@ -21,5 +24,21 @@ export const memoryTodoStore: ITodoStore = {
   },
   getAll(): Promise<TodoModel[]> | TodoModel[] {
     return [...storeTodo];
+  },
+
+  getTodoByStateTodo(state): Promise<TodoModel[]> | TodoModel[] {
+    if (state === undefined) {
+      throw error("Le paramètre ne peut pas être vide.");
+    }
+
+    const todos: TodoModel[] = storeTodo;
+    const list: TodoModel[] = [];
+    for (const iterator of todos) {
+      if (iterator.state.id === state.id) {
+        list.push(iterator);
+      }
+    }
+
+    return list;
   },
 };

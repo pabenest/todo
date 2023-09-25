@@ -9,13 +9,16 @@ export const fileWorkerStateTodoStore: IStateTodoStore = {
   async getDefault() {
     return travailleur.run("getDefault");
   },
-  add(): Promise<void> {
-    throw new Error("Method not implemented.");
+  async add(stateTodo: StateTodoModel): Promise<void> {
+    await travailleur.run("add", stateTodo);
   },
-  remove(): Promise<void> {
-    throw new Error("Method not implemented.");
+  async remove(id: number): Promise<void> {
+    await travailleur.run("remove", id);
   },
   async getAll(): Promise<StateTodoModel[]> {
     return await travailleur.run("getAll");
+  },
+  async setDefault(id: number) {
+    return await travailleur.run("setDefault", id);
   },
 };

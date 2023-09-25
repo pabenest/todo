@@ -1,15 +1,23 @@
 import { type ICommand } from "../ICommand";
-import { add } from "./addTodo";
+import { addStateTodo } from "./addStateTodo";
+import { addTodo } from "./addTodo";
+import { changeStateDefault } from "./changeDefaultStateTodo";
 import { changeState } from "./changeStateTodo";
 import { exposeConfig } from "./exposeConfig";
-import { list } from "./listTodo";
-import { remove } from "./remove";
+import { listStateTodo } from "./listStateTodo";
+import { listTodo } from "./listTodo";
+import { removeStateTodo } from "./removeStateTodo";
+import { removeTodo } from "./removeTodo";
 
 export const commands: ICommand[] = [
-  add,
-  list,
-  remove,
+  addTodo,
+  listTodo,
+  removeTodo,
   changeState,
+  addStateTodo,
+  listStateTodo,
+  removeStateTodo,
+  changeStateDefault,
   exposeConfig,
   {
     name: "exit",

@@ -25,5 +25,14 @@
       "value": "A faire",
       "isDefault": true
     }
+  },
+  {
+    "id": 4,
+    "value": "salut",
+    "state": {
+      "id": 1,
+      "value": "A faire",
+      "isDefault": true
+    }
   }
 ]

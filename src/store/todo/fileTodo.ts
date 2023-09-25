@@ -1,3 +1,4 @@
+import { error } from "console";
 import { readFile, writeFile } from "fs/promises";
 import path from "path";
 
@@ -8,7 +9,7 @@ import { type ITodoStore } from "./ITodoStore";
 
 const STORE_FILE = path.resolve(config.rootPath, "src/store/todo/todo.json");
 
-const getPersist = async (): Promise<TodoModel[]> => {
+const getPersistTodo = async (): Promise<TodoModel[]> => {
   try {
     return JSON.parse(await readFile(STORE_FILE, "utf-8")) as TodoModel[];
   } catch (error) {
@@ -41,10 +42,27 @@ export const fileTodoStore: ITodoStore = {
     await saveStore(store);
   },
   async remove(id: number): Promise<void> {
-    const store = await getPersist();
+    const store = await getPersistTodo();
     await saveStore(store.filter(todo => todo.id !== id));
   },
   async getAll(): Promise<TodoModel[]> {
-    return await getPersist();
+    return await getPersistTodo();
+  },
+  async getTodoByStateTodo(state): Promise<TodoModel[]> {
+    const store = await getPersistTodo();
+
+    if (state === undefined) {
+      throw error("Le paramètre ne peut pas être vide.");
+    }
+
+    const todos: TodoModel[] = await this.getAll();
+    const list: TodoModel[] = [];
+    for (const iterator of todos) {
+      if (iterator.state.id === state.id) {
+        list.push(iterator);
+      }
+    }
+
+    return list;
   },
 };

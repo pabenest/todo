@@ -3,9 +3,9 @@ import { type ICommand } from "../ICommand";
 
 const store = getTodoStore();
 
-export const list: ICommand = {
+export const listTodo: ICommand = {
   description: "Affiche la liste des tâches",
-  name: "list",
+  name: "listTodo",
   async run() {
     const todos = await store.getAll();
     console.clear();

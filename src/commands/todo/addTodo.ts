@@ -7,9 +7,9 @@ import { type ICommand } from "../ICommand";
 const todoStore = getTodoStore();
 const stateTodoStore = getStateTodoStore();
 
-export const add: ICommand = {
+export const addTodo: ICommand = {
   description: "Ajoute une tâche à la liste",
-  name: "add",
+  name: "addTodo",
   async run() {
     const text = await input({ message: "Entrez votre tâche" });
 

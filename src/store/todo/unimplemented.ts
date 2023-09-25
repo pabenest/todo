@@ -7,6 +7,7 @@ export const unimplementedTodoStore: ITodoStore = {
   add: unimplemented,
   getAll: unimplemented,
   remove: unimplemented,
+  getTodoByStateTodo: unimplemented,
 };
 
 export const unimplementedStateTodoStore: IStateTodoStore = {
@@ -14,4 +15,5 @@ export const unimplementedStateTodoStore: IStateTodoStore = {
   getAll: unimplemented,
   remove: unimplemented,
   getDefault: unimplemented,
+  setDefault: unimplemented,
 };

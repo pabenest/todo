@@ -19,4 +19,7 @@ export const fileWorkerTodoStore: ITodoStore = {
   async getAll(): Promise<TodoModel[]> {
     return await travailleur.run("getAll");
   },
+  async getTodoByStateTodo(state): Promise<TodoModel[]> {
+    return await travailleur.run("getTodoByStateTodo", state);
+  },
 };

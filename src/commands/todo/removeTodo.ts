@@ -5,9 +5,9 @@ import { type ICommand } from "../ICommand";
 
 const todoStore = getTodoStore();
 
-export const remove: ICommand = {
+export const removeTodo: ICommand = {
   description: "Supprime une tâche à la liste",
-  name: "remove",
+  name: "removeTodo",
   async run() {
     const todos = await todoStore.getAll();
 
@@ -21,7 +21,11 @@ export const remove: ICommand = {
 
     console.log(answers);
     for (const id of answers) {
-      await todoStore.remove(id);
+      try {
+        await todoStore.remove(id);
+      } catch (e) {
+        console.log(e);
+      }
     }
   },
 };
