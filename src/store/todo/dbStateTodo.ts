@@ -26,9 +26,9 @@ export const dbStateTodoStore: IStateTodoStore = {
     if (stateTodo) {
       if (stateTodo.isDefault) {
         throw new Error("Vous ne pouvez pas supprimer l'état par défaut.");
-      } else if (stateTodo.todos.length > 0) {
-        console.log(stateTodo.todos);
-        throw new Error("Vous ne pouvez pas supprimer cet état, il est associé à un todo.");
+        // } else if (stateTodo.todos.length > 0) {
+        //   console.log(stateTodo.todos);
+        //   throw new Error("Vous ne pouvez pas supprimer cet état, il est associé à un todo.");
       } else {
         console.log("id a supp" + id);
         await stateTodoRepository.delete(id);
