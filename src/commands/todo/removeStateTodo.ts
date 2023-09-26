@@ -12,7 +12,7 @@ export const removeStateTodo: ICommand = {
   async run() {
     const stateTodos = await stateTodoStore.getAll();
 
-    const answers: number[] = await checkbox({
+    const answers = await checkbox({
       message: "Quelles état de tâche voulez-vous supprimer ?",
       choices: stateTodos.map(stateTodo => ({
         name: stateTodo.value,
