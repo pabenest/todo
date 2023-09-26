@@ -1,25 +1,23 @@
 import { Travailleur } from "../../common/Travailleur";
-import { type StateTodoModel, type TodoModel } from "../../model/Todo";
 import { fileTodoStore } from "./fileTodo";
 import { type ITodoStore } from "./ITodoStore";
 
 const travailleur = new Travailleur(__filename, fileTodoStore);
 
 export const fileWorkerTodoStore: ITodoStore = {
-  async add(todo: TodoModel): Promise<void> {
+  async add(todo) {
     await travailleur.run("add", todo);
   },
-
-  async changeState(newState: StateTodoModel, todos: TodoModel[]): Promise<void> {
+  async changeState(newState, todos) {
     await travailleur.run("changeState", newState, todos);
   },
-  async remove(id: number): Promise<void> {
+  async remove(id) {
     await travailleur.run("remove", id);
   },
-  async getAll(): Promise<TodoModel[]> {
+  async getAll() {
     return await travailleur.run("getAll");
   },
-  async getTodoByStateTodo(state): Promise<TodoModel[]> {
+  async getTodoByStateTodo(state) {
     return await travailleur.run("getTodoByStateTodo", state);
   },
 };
