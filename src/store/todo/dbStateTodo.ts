@@ -1,6 +1,5 @@
-import { error } from "console";
-
 import { stateTodoRepository } from "../../db/repo";
+import { AppError } from "../../error";
 import { type IStateTodoStore } from "./IStateTodoStore";
 
 export const dbStateTodoStore: IStateTodoStore = {
@@ -16,26 +15,12 @@ export const dbStateTodoStore: IStateTodoStore = {
   },
   async remove(id) {
     console.log("id a supp" + id);
-    const stateTodo = await stateTodoRepository.findOne({
+    const stateTodo = await stateTodoRepository.findOneOrFail({
       where: { id },
-      relations: {
-        todos: true,
-      },
     });
 
-    if (stateTodo) {
-      if (stateTodo.isDefault) {
-        throw new Error("Vous ne pouvez pas supprimer l'état par défaut.");
-      } else if (stateTodo.todos.length > 0) {
-        console.log(stateTodo.todos);
-        throw new Error("Vous ne pouvez pas supprimer cet état, il est associé à un todo.");
-      } else {
-        console.log("id a supp" + id);
-        await stateTodoRepository.delete(id);
-      }
-    } else {
-      throw new Error("L'identifiant de l'état n'existe pas.");
-    }
+    console.log("id a supp" + id);
+    await stateTodoRepository.remove(stateTodo);
   },
   async getDefault() {
     const defaultState = await stateTodoRepository.findOne({ where: { isDefault: true } });
@@ -61,7 +46,7 @@ export const dbStateTodoStore: IStateTodoStore = {
       }
       await stateTodoRepository.save(stateTodos);
     } else {
-      throw error("L'identifiant de l'état n'existe pas.");
+      throw new AppError("L'identifiant de l'état n'existe pas.");
     }
   },
 };

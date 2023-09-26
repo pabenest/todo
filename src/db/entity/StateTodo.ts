@@ -13,6 +13,6 @@ export class StateTodo {
   @Column("text")
   value!: string;
 
-  @OneToMany(() => Todo, todo => todo.state)
+  @OneToMany(() => Todo, todo => todo.state, { eager: true })
   todos!: Todo[];
 }

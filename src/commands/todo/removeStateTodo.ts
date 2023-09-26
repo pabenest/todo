@@ -1,5 +1,6 @@
 import { checkbox } from "@inquirer/prompts";
 
+import { UnexpectedCommandError, UnexpectedError, UnexpectedRepositoryError } from "../../error";
 import { getStateTodoStore } from "../../store/todo";
 import { type ICommand } from "../ICommand";
 
@@ -23,8 +24,13 @@ export const removeStateTodo: ICommand = {
     for (const id of answers) {
       try {
         await getStateTodoStore().remove(id);
-      } catch (e) {
-        console.log(e);
+      } catch (e: unknown) {
+        if (e instanceof UnexpectedRepositoryError) {
+          console.warn("<ERREUR Repository>", e.message);
+          console.info("More info:", e.appErrorStack());
+        } else if (e instanceof Error) {
+          throw new UnexpectedCommandError(`Erreur inconnue lors de la commande "remove".`, e);
+        } else throw new UnexpectedError(`Erreur fatale lors de la commande "remove". (error: ${String(e)})`);
       }
     }
   },
