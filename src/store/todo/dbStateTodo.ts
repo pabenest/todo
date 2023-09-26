@@ -1,12 +1,10 @@
 import { error } from "console";
 
 import { stateTodoRepository } from "../../db/repo";
-import { type StateTodoModel, type TodoModel } from "../../model/Todo";
-import { dbTodoStore } from "./dbTodo";
 import { type IStateTodoStore } from "./IStateTodoStore";
 
 export const dbStateTodoStore: IStateTodoStore = {
-  async add(stateTodo: StateTodoModel) {
+  async add(stateTodo) {
     await stateTodoRepository.insert({
       value: stateTodo.value,
       isDefault: stateTodo.isDefault,
@@ -16,24 +14,27 @@ export const dbStateTodoStore: IStateTodoStore = {
     const entities = await stateTodoRepository.find();
     return entities.map(x => ({ id: x.id, value: x.value, isDefault: x.isDefault }));
   },
-  async remove(id: number) {
+  async remove(id) {
     console.log("id a supp" + id);
-    const stateTodo = await stateTodoRepository.findOne({ where: { id } });
+    const stateTodo = await stateTodoRepository.findOne({
+      where: { id },
+      relations: {
+        todos: true,
+      },
+    });
 
     if (stateTodo) {
-      const todos: TodoModel[] = await dbTodoStore.getTodoByStateTodo(stateTodo);
-
-      if (stateTodo.isDefault === true) {
-        throw error("Vous ne pouvez pas supprimer l'état par défaut.");
-      } else if (todos.length > 0) {
-        console.log(todos);
-        throw error("Vous ne pouvez pas supprimer cet état, il est associé à un todo.");
+      if (stateTodo.isDefault) {
+        throw new Error("Vous ne pouvez pas supprimer l'état par défaut.");
+      } else if (stateTodo.todos.length > 0) {
+        console.log(stateTodo.todos);
+        throw new Error("Vous ne pouvez pas supprimer cet état, il est associé à un todo.");
       } else {
         console.log("id a supp" + id);
         await stateTodoRepository.delete(id);
       }
     } else {
-      throw error("L'identifiant de l'état n'existe pas.");
+      throw new Error("L'identifiant de l'état n'existe pas.");
     }
   },
   async getDefault() {
@@ -46,17 +47,19 @@ export const dbStateTodoStore: IStateTodoStore = {
       isDefault: true,
     };
   },
-  async setDefault(id: number) {
-    const stateTodo = await stateTodoRepository.findOne({ where: { id } });
-    if (stateTodo) {
-      const stateTodos = await this.getAll();
+  async setDefault(id) {
+    const stateTodos = await this.getAll();
+    const hasStateTodo = stateTodos.find(stateTodo => stateTodo.id === id);
+    if (hasStateTodo) {
       //les autres ne sont plus par défaut.
-      for (const iterator of stateTodos) {
-        iterator.isDefault = false;
+      for (const stateTodo of stateTodos) {
+        if (stateTodo.id !== id) {
+          stateTodo.isDefault = false;
+        } else {
+          stateTodo.isDefault = true;
+        }
       }
       await stateTodoRepository.save(stateTodos);
-      stateTodo.isDefault = true;
-      await stateTodoRepository.save(stateTodo);
     } else {
       throw error("L'identifiant de l'état n'existe pas.");
     }

@@ -1,7 +1,5 @@
-import { error } from "console";
-
 import { getIncrement } from "../../common/model/WithId";
-import { type StateTodoModel, type TodoModel } from "../../model/Todo";
+import { type StateTodoModel } from "../../model/Todo";
 import { type IStateTodoStore } from "./IStateTodoStore";
 import { memoryTodoStore } from "./memoryTodo";
 
@@ -16,35 +14,35 @@ export const memoryStateTodoStore: IStateTodoStore = {
     const id = getIncrement(storeStateTodo);
     storeStateTodo.push({ ...stateTodo, id });
   },
-  getAll(): StateTodoModel[] {
+  getAll() {
     return [...storeStateTodo];
   },
-  async remove(id: number) {
+  async remove(id) {
     const stateTodo = storeStateTodo.find(x => x.id === id);
 
     if (stateTodo) {
-      const todos: TodoModel[] = await memoryTodoStore.getTodoByStateTodo(stateTodo);
+      const todos = await memoryTodoStore.getTodoByStateTodo(stateTodo);
 
-      if (stateTodo.isDefault === true) {
-        throw error("Vous ne pouvez pas supprimer l'état par défaut.");
+      if (stateTodo.isDefault) {
+        throw new Error("Vous ne pouvez pas supprimer l'état par défaut.");
       } else if (todos.length > 0) {
-        throw error("Vous ne pouvez pas supprimer cet état, il est associé à un todo.");
+        throw new Error("Vous ne pouvez pas supprimer cet état, il est associé à un todo.");
       } else {
         storeStateTodo = storeStateTodo.filter(x => id !== x.id);
       }
     } else {
-      throw error("L'identifiant de l'état n'existe pas.");
+      throw new Error("L'identifiant de l'état n'existe pas.");
     }
   },
   getDefault() {
-    let stateTodo = storeStateTodo.find(x => x.isDefault === true);
+    const stateTodo = storeStateTodo.find(x => x.isDefault === true);
 
-    if (stateTodo === undefined) {
-      stateTodo = storeStateTodo[0];
+    if (!stateTodo) {
+      return storeStateTodo[0];
     }
     return stateTodo;
   },
-  setDefault(id: number) {
+  setDefault(id) {
     const stateTodo = storeStateTodo.find(x => x.id === id);
     if (stateTodo) {
       //l'ancien n'est plus le par defaut.
@@ -55,7 +53,7 @@ export const memoryStateTodoStore: IStateTodoStore = {
 
       stateTodo.isDefault = true;
     } else {
-      throw error("L'identifiant de l'état n'existe pas.");
+      throw new Error("L'identifiant de l'état n'existe pas.");
     }
   },
 };

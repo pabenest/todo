@@ -1,4 +1,3 @@
-import { error } from "console";
 import { readFile, writeFile } from "fs/promises";
 import path from "path";
 
@@ -10,7 +9,7 @@ import { type IStateTodoStore } from "./IStateTodoStore";
 
 const STORE_FILE = path.resolve(config.rootPath, "src/store/todo/stateTodo.json");
 
-const getPersistStateTodo = async (): Promise<StateTodoModel[]> => {
+const storeStateTodo = async (): Promise<StateTodoModel[]> => {
   try {
     return JSON.parse(await readFile(STORE_FILE, "utf-8")) as StateTodoModel[];
   } catch (error) {
@@ -24,7 +23,7 @@ const saveStore = async (store: StateTodoModel[]): Promise<void> => {
 
 export const fileStateTodoStore: IStateTodoStore = {
   async getDefault() {
-    const store = await getPersistStateTodo();
+    const store = await storeStateTodo();
     let stateTodo = store.find(x => x.isDefault === true);
 
     if (stateTodo === undefined) {
@@ -32,47 +31,47 @@ export const fileStateTodoStore: IStateTodoStore = {
     }
     return stateTodo;
   },
-  async add(stateTodo: StateTodoModel): Promise<void> {
+  async add(stateTodo) {
     const store = await this.getAll();
     const id = getIncrement(store);
     store.push({ ...stateTodo, id });
     await saveStore(store);
   },
-  async remove(id: number): Promise<void> {
-    const states = await getPersistStateTodo();
+  async remove(id) {
+    const stateTodos = await storeStateTodo();
 
-    const stateTodo = states.find(x => x.id === id);
+    const stateTodo = stateTodos.find(x => x.id === id);
 
     if (stateTodo) {
       const todos: TodoModel[] = await fileTodoStore.getTodoByStateTodo(stateTodo);
 
       if (stateTodo.isDefault === true) {
-        throw error("Vous ne pouvez pas supprimer l'état par défaut.");
+        throw new Error("Vous ne pouvez pas supprimer l'état par défaut.");
       } else if (todos.length > 0) {
-        throw error("Vous ne pouvez pas supprimer cet état, il est associé à un todo.");
+        throw new Error("Vous ne pouvez pas supprimer cet état, il est associé à un todo.");
       } else {
-        await saveStore(states.filter(todo => todo.id !== id));
+        await saveStore(stateTodos.filter(todo => todo.id !== id));
       }
     } else {
-      throw error("L'identifiant de l'état n'existe pas.");
+      throw new Error("L'identifiant de l'état n'existe pas.");
     }
   },
   async getAll(): Promise<StateTodoModel[]> {
-    return await getPersistStateTodo();
+    return await storeStateTodo();
   },
   async setDefault(id: number) {
-    const store = await this.getAll();
+    const stateTodos = await this.getAll();
 
-    const stateTodo = store.find(x => x.id === id);
+    const stateTodo = stateTodos.find(x => x.id === id);
     if (stateTodo) {
       //les autres ne sont plus par défaut.
-      for (const iterator of store) {
+      for (const iterator of stateTodos) {
         iterator.isDefault = false;
       }
       stateTodo.isDefault = true;
-      await saveStore(store);
+      await saveStore(stateTodos);
     } else {
-      throw error("L'identifiant de l'état n'existe pas.");
+      throw new Error("L'identifiant de l'état n'existe pas.");
     }
   },
 };

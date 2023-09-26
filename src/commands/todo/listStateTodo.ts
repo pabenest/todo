@@ -4,7 +4,7 @@ import { type ICommand } from "../ICommand";
 const store = getStateTodoStore();
 
 export const listStateTodo: ICommand = {
-  description: "Affiche la liste des tâches",
+  description: "Affiche la liste des états de tâche",
   name: "listStateTodo",
   async run() {
     const stateTodos = await store.getAll();

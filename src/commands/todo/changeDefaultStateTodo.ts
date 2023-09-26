@@ -1,6 +1,5 @@
 import { select } from "@inquirer/prompts";
 
-import { type StateTodoModel } from "../../model/Todo";
 import { getStateTodoStore } from "../../store/todo";
 import { type ICommand } from "../ICommand";
 
@@ -10,11 +9,11 @@ export const changeStateDefault: ICommand = {
   description: "Choix de l'état par défaut",
   name: "changeStateDefault",
   async run() {
-    const stateTodoBdds: StateTodoModel[] = await stateTodoStore.getAll();
+    const currentStates = await stateTodoStore.getAll();
     //Choix de l'état par défaut.
-    const stateId: number = await select({
+    const stateId = await select({
       message: "Choix du nouvel état",
-      choices: stateTodoBdds.map(stateTodo => ({
+      choices: currentStates.map(stateTodo => ({
         name: stateTodo.value,
         value: stateTodo.id,
       })),
