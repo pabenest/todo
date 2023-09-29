@@ -1,13 +1,16 @@
-import { getIncrement } from "../../common/model/WithId";
-import { type StateTodoModel } from "../../model/Todo";
+import { getIncrement } from "@common/model/WithId";
+import { type StateTodoModel } from "@core/model/Todo";
+
+import { type ITodoStore } from "../../todo/store/ITodoStore";
 import { type IStateTodoStore } from "./IStateTodoStore";
-import { memoryTodoStore } from "./memoryTodo";
 
 let storeStateTodo: StateTodoModel[] = [
   { id: 1, value: "A faire", isDefault: true },
   { id: 2, value: "A compléter", isDefault: false },
   { id: 3, value: "Terminé", isDefault: false },
 ];
+
+declare const memoryTodoStore: ITodoStore;
 
 export const memoryStateTodoStore: IStateTodoStore = {
   add(stateTodo: StateTodoModel): void {

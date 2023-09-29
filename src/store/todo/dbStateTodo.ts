@@ -1,5 +1,6 @@
-import { stateTodoRepository } from "../../db/repo";
-import { AppError } from "../../error";
+import { AppError } from "@common/error";
+import { stateTodoRepository } from "@core/db/repo";
+
 import { type IStateTodoStore } from "./IStateTodoStore";
 
 export const dbStateTodoStore: IStateTodoStore = {

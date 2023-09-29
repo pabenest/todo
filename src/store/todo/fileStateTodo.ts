@@ -1,13 +1,15 @@
+import { ROOT_PATH } from "@common/config";
+import { getIncrement } from "@common/model/WithId";
+import { type StateTodoModel } from "@core/model/Todo";
 import { readFile, writeFile } from "fs/promises";
 import path from "path";
 
-import { getIncrement } from "../../common/model/WithId";
-import { config } from "../../config";
-import { type StateTodoModel, type TodoModel } from "../../model/Todo";
-import { fileTodoStore } from "./fileTodo";
+import { type ITodoStore } from "../../todo/store/ITodoStore";
 import { type IStateTodoStore } from "./IStateTodoStore";
 
-const STORE_FILE = path.resolve(config.rootPath, "src/store/todo/stateTodo.json");
+declare const fileTodoStore: ITodoStore;
+
+const STORE_FILE = path.resolve(ROOT_PATH, "src/store/todo/stateTodo.json");
 
 const storeStateTodo = async (): Promise<StateTodoModel[]> => {
   try {
@@ -43,7 +45,7 @@ export const fileStateTodoStore: IStateTodoStore = {
     const stateTodo = stateTodos.find(x => x.id === id);
 
     if (stateTodo) {
-      const todos: TodoModel[] = await fileTodoStore.getTodoByStateTodo(stateTodo);
+      const todos = await fileTodoStore.getTodoByStateTodo(stateTodo);
 
       if (stateTodo.isDefault === true) {
         throw new Error("Vous ne pouvez pas supprimer l'état par défaut.");

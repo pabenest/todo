@@ -1,5 +1,6 @@
-import { Travailleur } from "../../common/Travailleur";
-import { type StateTodoModel } from "../../model/Todo";
+import { Travailleur } from "@common/Travailleur";
+import { type StateTodoModel } from "@core/model/Todo";
+
 import { fileStateTodoStore } from "./fileStateTodo";
 import { type IStateTodoStore } from "./IStateTodoStore";
 

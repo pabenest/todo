@@ -1,3 +1,5 @@
+import { AppError } from "./error";
+
 export const unimplemented = () => {
-  throw new Error("Method not implemented.");
+  throw new AppError("Method not implemented.");
 };

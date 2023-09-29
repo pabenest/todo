@@ -1,6 +1,6 @@
 import { type EntitySubscriberInterface, EventSubscriber, type RemoveEvent } from "typeorm";
 
-import { UnexpectedRepositoryError } from "../../error";
+import { UnexpectedRepositoryError } from "../../../common/error";
 import { StateTodo } from "../entity/StateTodo";
 import { Todo } from "../entity/Todo";
 
