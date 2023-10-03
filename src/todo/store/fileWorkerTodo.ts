@@ -17,6 +17,9 @@ export const fileWorkerTodoStore = (() =>
     async remove(id) {
       await travailleur.run("remove", id);
     },
+    async findOne(id) {
+      return await travailleur.run("findOne", id);
+    },
     async getAll() {
       return await travailleur.run("getAll");
     },

@@ -1,7 +1,7 @@
 import { config } from "@common/config";
 import { UnexpectedError } from "@common/error";
 import { Todo } from "@core/db/entity/Todo";
-import { type StateTodoModel, type TodoModel } from "@core/model/Todo";
+import { type TodoModel } from "@core/model/Todo";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
@@ -35,12 +35,16 @@ export class TodoService implements ITodoStore {
     }
   }
 
-  public async changeState(newState: StateTodoModel, todos: TodoModel[]) {
+  public async changeState(newState: number, todos: number[]) {
     await this.todoStore.changeState(newState, todos);
   }
 
-  public async getTodoByStateTodo(state: StateTodoModel) {
+  public async getTodoByStateTodo(state: number) {
     return this.todoStore.getTodoByStateTodo(state);
+  }
+
+  public async findOne(id: number) {
+    return await this.todoStore.findOne(id);
   }
 
   public async add(instance: Omit<TodoModel, "id">) {

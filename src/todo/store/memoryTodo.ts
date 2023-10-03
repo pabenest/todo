@@ -2,6 +2,7 @@ import { UnexpectedError } from "@common/error";
 import { getIncrement } from "@common/model/WithId";
 import { type StoreGetter } from "@common/store/IStore";
 import { type TodoModel } from "@core/model/Todo";
+import { memoryStateTodoStore } from "src/stateTodo/store/memoryStateTodo";
 
 import { type ITodoStore } from "./ITodoStore";
 
@@ -13,11 +14,17 @@ export const memoryTodoStore = (() =>
       const id = getIncrement(storeTodo);
       storeTodo.push({ ...todo, id: id });
     },
-    changeState(newState, todos) {
-      for (const iterator of todos) {
-        const todo = todos.find(x => x.value === iterator.value) ?? null;
-        if (todo) {
-          todo.state = newState;
+    findOne(id) {
+      return storeTodo.find(x => x.id === id);
+    },
+    async changeState(newState, todos) {
+      for (const id of todos) {
+        const temp = await this.findOne(id);
+        if (temp) {
+          const state = await memoryStateTodoStore().findOne(newState);
+          if (state) {
+            temp.state = state;
+          }
         }
       }
     },
@@ -36,7 +43,7 @@ export const memoryTodoStore = (() =>
       const todos = storeTodo;
       const list: TodoModel[] = [];
       for (const iterator of todos) {
-        if (iterator.state.id === state.id) {
+        if (iterator.state.id === state) {
           list.push(iterator);
         }
       }

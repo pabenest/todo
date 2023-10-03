@@ -1,7 +1,7 @@
 import { UnexpectedError } from "@common/error";
 import { type StoreGetter } from "@common/store/IStore";
 import { type Todo } from "@core/db/entity/Todo";
-import { type StateTodoModel, type TodoModel } from "@core/model/Todo";
+import { type TodoModel } from "@core/model/Todo";
 import { type Repository } from "typeorm";
 
 import { type ITodoStore } from "./ITodoStore";
@@ -16,11 +16,15 @@ export const dbTodoStore = ((todoRepository: Repository<Todo>) =>
         value: todo.value,
       });
     },
-    async changeState(newState: StateTodoModel, todos: TodoModel[]) {
-      await todoRepository.update(
-        todos.map(todo => todo.id),
-        { state: { id: newState.id } },
-      );
+    async findOne(id: number) {
+      return await todoRepository.findOne({
+        where: {
+          id,
+        },
+      });
+    },
+    async changeState(id: number, todos: number[]) {
+      await todoRepository.update(todos, { state: { id } });
     },
     async remove(id: number) {
       await todoRepository.delete(id);
@@ -43,7 +47,7 @@ export const dbTodoStore = ((todoRepository: Repository<Todo>) =>
       }));
     },
 
-    async getTodoByStateTodo(state) {
+    async getTodoByStateTodo(state: number) {
       if (state === undefined) {
         throw new UnexpectedError("Le paramètre ne peut pas être vide.");
       }
@@ -51,7 +55,7 @@ export const dbTodoStore = ((todoRepository: Repository<Todo>) =>
       const todos = await this.getAll();
       const list: TodoModel[] = [];
       for (const iterator of todos) {
-        if (iterator.state.id === state.id) {
+        if (iterator.state.id === state) {
           list.push(iterator);
         }
       }
