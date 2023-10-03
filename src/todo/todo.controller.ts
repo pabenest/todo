@@ -1,47 +1,82 @@
-import { type TodoModel } from "@core/model/Todo";
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  NotFoundException,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+  UsePipes,
+} from "@nestjs/common";
 
-import { ChangeStateDto } from "./dto/ChangeStateDto";
+import { ZodValidationPipe } from "../common/pipes/ZodValidationPipe";
+import { StateTodoService } from "../stateTodo/stateTodo.service";
+import { CreateTodoDto, createTodoDtoSchema } from "./dto/CreateTodoDto";
+import { type TodoDto } from "./dto/TodoDto";
+import { UpdateTodoDto, updateTodoDtoSchema } from "./dto/UpdateTodoDto";
 import { TodoService } from "./todo.service";
 
 @Controller("todo")
 export class TodoController {
-  constructor(private readonly todoService: TodoService) {}
+  constructor(
+    private readonly todoService: TodoService,
+    private readonly stateTodoService: StateTodoService,
+  ) {}
 
   @Post()
-  add(@Body() instance: TodoModel) {
-    console.log("add:", instance);
-    return this.todoService.add(instance);
+  @UsePipes(new ZodValidationPipe(createTodoDtoSchema))
+  add(@Body() todo: CreateTodoDto) {
+    console.log("add:", todo);
+    return this.todoService.add({
+      //toModel(todo)
+      state: todo.state,
+      value: todo.value,
+    });
   }
 
-  @Put("change-state")
-  async changeState(@Body() changeState: ChangeStateDto) {
-    console.log("changeState:", changeState);
-    await this.todoService.changeState(changeState.newState, changeState.todos);
+  @Put(":id")
+  @UsePipes(new ZodValidationPipe(updateTodoDtoSchema))
+  async update(@Param("id", ParseIntPipe) id: number, @Body() partialTodo: UpdateTodoDto) {
+    console.log("update:", partialTodo);
+    await this.todoService.update(id, {
+      //toModel(todo) (partial)
+      state: partialTodo.state,
+      value: partialTodo.value,
+    });
   }
 
   @Delete(":id")
-  async remove(@Param("id") id: string) {
+  async remove(@Param("id", ParseIntPipe) id: number) {
     console.log("delete todo:" + id);
-    await this.todoService.remove(parseInt(id));
+    await this.todoService.remove(id);
   }
 
   @Get(":id")
-  async findOne(@Param("id") id: string) {
-    console.log("findOne todo:" + id);
-    return await this.todoService.findOne(parseInt(id));
+  async findOne(@Param("id", ParseIntPipe) id: number) {
+    const found = await this.todoService.findOne(id);
+    if (!found) throw new NotFoundException(`Todo with id ${id} not found`);
+    return found;
   }
 
   @Get()
-  getAll() {
+  async getAll() {
     console.log("getAll todo");
-    return this.todoService.getAll();
+    const states = await this.stateTodoService.getAll();
+    const todos = (await this.todoService.getAll()).map<TodoDto>(model => ({
+      //toDto(model)
+      id: model.id,
+      state: states.find(state => state.id === model.state)!,
+      value: model.value,
+    }));
+    return todos;
   }
 
-  public async getTodoByStateTodo(state: number) {
-    console.log("getTodoByStateTodo todo:" + state);
-    return this.todoService.getTodoByStateTodo(state);
-  }
+  // public async getTodoByStateTodo(state: number) {
+  //   console.log("getTodoByStateTodo todo:" + state);
+  //   return this.todoService.getTodoByStateTodoId(state);
+  // }
 }
 
 /*

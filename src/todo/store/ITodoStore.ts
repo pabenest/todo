@@ -3,5 +3,5 @@ import { type TodoModel } from "@core/model/Todo";
 
 export interface ITodoStore extends IStore<TodoModel> {
   changeState(newState: number, todos: number[]): Promise<void> | void;
-  getTodoByStateTodo(state: number): Promise<TodoModel[]> | TodoModel[];
+  getTodoByStateTodoId(stateId: number): Promise<TodoModel[]> | TodoModel[];
 }

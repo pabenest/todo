@@ -39,20 +39,24 @@ export class TodoService implements ITodoStore {
     await this.todoStore.changeState(newState, todos);
   }
 
-  public async getTodoByStateTodo(state: number) {
-    return this.todoStore.getTodoByStateTodo(state);
+  public async getTodoByStateTodoId(state: number) {
+    return this.todoStore.getTodoByStateTodoId(state);
   }
 
   public async findOne(id: number) {
     return await this.todoStore.findOne(id);
   }
 
-  public async add(instance: Omit<TodoModel, "id">) {
-    await this.todoStore.add(instance);
+  public async add(todo: Omit<TodoModel, "id">) {
+    await this.todoStore.add(todo);
   }
 
   public async getAll() {
     return this.todoStore.getAll();
+  }
+
+  public async update(id: number, todo: Partial<Omit<TodoModel, "id">>) {
+    await this.todoStore.update(id, todo);
   }
 
   public async remove(id: number) {

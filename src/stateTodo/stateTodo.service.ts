@@ -1,5 +1,5 @@
 import { config } from "@common/config";
-import { UnexpectedError } from "@common/error";
+import { AppError, UnexpectedError } from "@common/error";
 import { StateTodo } from "@core/db/entity/StateTodo";
 import { type StateTodoModel } from "@core/model/Todo";
 import { Injectable } from "@nestjs/common";
@@ -52,6 +52,32 @@ export class StateTodoService implements IStateTodoStore {
   }
   async getAll() {
     return await this.stateTodoStore.getAll();
+  }
+  async update(id: number, instance: Partial<Omit<StateTodoModel, "id">>) {
+    const stateTodos = await this.getAll();
+    // if instance.isDefault = false et qu'il était à true, on doit throw une erreur
+    // if instance.isDefault = true et qu'il était à false, on doit mettre à false les autres
+    // if instance.isDefault = undefined, on update normalement
+
+    if (instance.isDefault === false) {
+      const stateTodo = stateTodos.find(stateTodo => stateTodo.id === id);
+      if (stateTodo?.isDefault === true) {
+        throw new AppError("Can't set default to false on default state");
+      }
+      // fallback cas normal
+    } else if (instance.isDefault === true) {
+      for (const stateTodo of stateTodos) {
+        if (stateTodo.id !== id) {
+          await this.stateTodoStore.update(id, {
+            isDefault: false,
+          });
+        }
+      }
+      // on continue cas normal
+    }
+
+    // -------- cas normal
+    await this.stateTodoStore.update(id, instance);
   }
   async remove(id: number) {
     await this.stateTodoStore.remove(id);

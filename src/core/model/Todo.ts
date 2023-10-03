@@ -1,7 +1,7 @@
 import { type WithId } from "@common/model/WithId";
 
 export interface TodoModel extends WithId {
-  state: StateTodoModel;
+  state: number;
   value: string;
 }
 export interface StateTodoModel extends WithId {

@@ -1,4 +1,3 @@
-import { UnexpectedError } from "@common/error";
 import { type StoreGetter } from "@common/store/IStore";
 import { type Todo } from "@core/db/entity/Todo";
 import { type TodoModel } from "@core/model/Todo";
@@ -6,60 +5,66 @@ import { type Repository } from "typeorm";
 
 import { type ITodoStore } from "./ITodoStore";
 
-export const dbTodoStore = ((todoRepository: Repository<Todo>) =>
-  ({
-    async add(todo: TodoModel) {
-      await todoRepository.insert({
-        state: {
-          id: todo.state.id,
-        },
-        value: todo.value,
-      });
-    },
-    async findOne(id: number) {
-      return await todoRepository.findOne({
-        where: {
-          id,
-        },
-      });
-    },
-    async changeState(id: number, todos: number[]) {
-      await todoRepository.update(todos, { state: { id } });
-    },
-    async remove(id: number) {
-      await todoRepository.delete(id);
-    },
-    async getAll() {
-      return (
-        await todoRepository.find({
-          relations: {
-            state: true,
-          },
-        })
-      ).map(todo => ({
-        id: todo.id,
-        value: todo.value,
-        state: {
-          id: todo.state.id,
-          value: todo.state.value,
-          isDefault: todo.state.isDefault,
-        },
-      }));
-    },
+export const dbTodoStore = ((todoRepository: Repository<Todo>): ITodoStore => ({
+  async add(todo) {
+    await todoRepository.insert({
+      state: {
+        id: todo.state,
+      },
+      value: todo.value,
+    });
+  },
+  async findOne(id) {
+    const raw = await todoRepository.findOne({
+      where: {
+        id,
+      },
+    });
 
-    async getTodoByStateTodo(state: number) {
-      if (state === undefined) {
-        throw new UnexpectedError("Le paramètre ne peut pas être vide.");
+    if (!raw) {
+      return null;
+    }
+
+    return {
+      id: raw.id,
+      value: raw.value,
+      state: raw.state.id,
+    };
+  },
+  async changeState(id, todos) {
+    await todoRepository.update(todos, { state: { id } });
+  },
+  async remove(id) {
+    await todoRepository.delete(id);
+  },
+  async getAll() {
+    return (
+      await todoRepository.find({
+        relations: ["state"],
+      })
+    ).map(todo => ({
+      id: todo.id,
+      value: todo.value,
+      state: todo.state.id,
+    }));
+  },
+  async update(id, todo) {
+    await todoRepository.update(id, {
+      state: {
+        id: todo.state,
+      },
+      value: todo.value,
+    });
+  },
+  async getTodoByStateTodoId(state) {
+    const todos = await this.getAll();
+    const list: TodoModel[] = [];
+    for (const todo of todos) {
+      if (todo.state === state) {
+        list.push(todo);
       }
+    }
 
-      const todos = await this.getAll();
-      const list: TodoModel[] = [];
-      for (const iterator of todos) {
-        if (iterator.state.id === state) {
-          list.push(iterator);
-        }
-      }
-
-      return list;
-    },
-  }) as ITodoStore) satisfies StoreGetter<ITodoStore>;
+    return list;
+  },
+})) satisfies StoreGetter<ITodoStore>;

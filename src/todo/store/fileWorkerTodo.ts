@@ -6,24 +6,26 @@ import { type ITodoStore } from "./ITodoStore";
 
 const travailleur = new Travailleur(__filename, fileTodoStore());
 
-export const fileWorkerTodoStore = (() =>
-  ({
-    async add(todo) {
-      await travailleur.run("add", todo);
-    },
-    async changeState(newState, todos) {
-      await travailleur.run("changeState", newState, todos);
-    },
-    async remove(id) {
-      await travailleur.run("remove", id);
-    },
-    async findOne(id) {
-      return await travailleur.run("findOne", id);
-    },
-    async getAll() {
-      return await travailleur.run("getAll");
-    },
-    async getTodoByStateTodo(state) {
-      return await travailleur.run("getTodoByStateTodo", state);
-    },
-  }) as ITodoStore) satisfies StoreGetter<ITodoStore>;
+export const fileWorkerTodoStore = ((): ITodoStore => ({
+  async add(todo) {
+    await travailleur.run("add", todo);
+  },
+  async changeState(newState, todos) {
+    await travailleur.run("changeState", newState, todos);
+  },
+  async remove(id) {
+    await travailleur.run("remove", id);
+  },
+  async findOne(id) {
+    return travailleur.run("findOne", id);
+  },
+  async update(id, todo) {
+    await travailleur.run("update", id, todo);
+  },
+  async getAll() {
+    return travailleur.run("getAll");
+  },
+  async getTodoByStateTodoId(state) {
+    return travailleur.run("getTodoByStateTodoId", state);
+  },
+})) satisfies StoreGetter<ITodoStore>;

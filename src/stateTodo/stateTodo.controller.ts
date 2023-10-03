@@ -1,6 +1,8 @@
 import { StateTodoModel } from "@core/model/Todo";
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UsePipes } from "@nestjs/common";
 
+import { ZodValidationPipe } from "../common/pipes/ZodValidationPipe";
+import { UpdateStateTodoDto, updateStateTodoDtoSchema } from "./dto/UpdateStateTodoDto";
 import { StateTodoService } from "./stateTodo.service";
 
 @Controller("state-todo")
@@ -26,9 +28,13 @@ export class StateTodoController {
     return this.stateTodoService.getAll();
   }
 
-  @Put("default/:id")
-  async setDefault(@Param("id") id: string) {
-    await this.stateTodoService.setDefault(parseInt(id));
+  @Put(":id")
+  @UsePipes(new ZodValidationPipe(updateStateTodoDtoSchema))
+  async update(@Param("id", ParseIntPipe) id: number, @Body() stateTodo: UpdateStateTodoDto) {
+    await this.stateTodoService.update(id, {
+      isDefault: stateTodo.isDefault,
+      value: stateTodo.value,
+    });
   }
 
   @Get("default")

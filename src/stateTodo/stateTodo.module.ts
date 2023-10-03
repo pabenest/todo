@@ -9,6 +9,6 @@ import { StateTodoService } from "./stateTodo.service";
   imports: [TypeOrmModule.forFeature([StateTodo])],
   controllers: [StateTodoController],
   providers: [StateTodoService],
-  exports: [TypeOrmModule],
+  exports: [TypeOrmModule, StateTodoService],
 })
 export class StateTodoModule {}
