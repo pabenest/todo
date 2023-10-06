@@ -1,4 +1,4 @@
-import { type StateTodoDto } from "../../stateTodo/dto/StateTodoDto";
+import { type StateTodoDto } from "../statetodo/StateTodoDto";
 
 export interface TodoDto {
   id: number;

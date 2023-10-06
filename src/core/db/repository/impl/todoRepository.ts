@@ -3,7 +3,7 @@ import { type Todo } from "@core/db/entity/Todo";
 import { type TodoModel } from "@core/model/Todo";
 import { type Repository } from "typeorm";
 
-import { type ITodoStore } from "./ITodoStore";
+import { type ITodoStore } from "../ITodoRepository";
 
 export const dbTodoStore = ((todoRepository: Repository<Todo>): ITodoStore => ({
   async add(todo) {

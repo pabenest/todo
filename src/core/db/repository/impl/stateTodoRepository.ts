@@ -3,7 +3,7 @@ import { type StoreGetter } from "@common/store/IStore";
 import { type StateTodo } from "@core/db/entity/StateTodo";
 import { type Repository } from "typeorm";
 
-import { type IStateTodoStore } from "./IStateTodoStore";
+import { type IStateTodoStore } from "../IStateTodoRepository";
 
 export const dbStateTodoStore = ((stateTodoRepository: Repository<StateTodo>): IStateTodoStore => ({
   async add(stateTodo) {

@@ -1,38 +1,17 @@
-import { config } from "@common/config";
-import { UnexpectedError } from "@common/error";
 import { Todo } from "@core/db/entity/Todo";
 import { type TodoModel } from "@core/model/Todo";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
-import { dbTodoStore } from "./store/dbTodo";
-import { fileTodoStore } from "./store/fileTodo";
-import { fileWorkerTodoStore } from "./store/fileWorkerTodo";
-import { type ITodoStore } from "./store/ITodoStore";
-import { memoryTodoStore } from "./store/memoryTodo";
+import { dbTodoStore } from "../core/db/repository/impl/todoRepository";
+import { type ITodoStore } from "../core/db/repository/ITodoRepository";
 
 @Injectable()
 export class TodoService implements ITodoStore {
   private readonly todoStore: ITodoStore;
   constructor(@InjectRepository(Todo) private readonly todoRepository: Repository<Todo>) {
-    switch (config.store.type) {
-      case "db":
-        this.todoStore = dbTodoStore(todoRepository);
-        break;
-      case "memory":
-        this.todoStore = memoryTodoStore();
-        break;
-      case "file":
-        this.todoStore = fileTodoStore();
-        break;
-      case "fileworker":
-        this.todoStore = fileWorkerTodoStore();
-        break;
-      case "mock":
-      default:
-        throw new UnexpectedError("Type de store inconnu.");
-    }
+    this.todoStore = dbTodoStore(todoRepository);
   }
 
   public async changeState(newState: number, todos: number[]) {

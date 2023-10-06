@@ -20,15 +20,12 @@ const env = configSchema.parse(process.env);
 
 export const config = {
   nodeEnv: env.NODE_ENV,
-  store: {
-    type: env.APP_STORE_TYPE,
-    db: {
-      host: env.APP_POSTGRES_HOST,
-      port: env.APP_POSTGRES_PORT,
-      database: env.APP_POSTGRES_DATABASE,
-      user: env.APP_POSTGRES_USER,
-      password: env.APP_POSTGRES_PASSWORD,
-    },
+  db: {
+    host: env.APP_POSTGRES_HOST,
+    port: env.APP_POSTGRES_PORT,
+    database: env.APP_POSTGRES_DATABASE,
+    user: env.APP_POSTGRES_USER,
+    password: env.APP_POSTGRES_PASSWORD,
   },
 } as const;
 export const ROOT_PATH = path.resolve(__dirname, "../");

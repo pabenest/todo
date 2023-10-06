@@ -1,39 +1,19 @@
-import { config } from "@common/config";
-import { AppError, UnexpectedError } from "@common/error";
+import { AppError } from "@common/error";
 import { StateTodo } from "@core/db/entity/StateTodo";
 import { type StateTodoModel } from "@core/model/Todo";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
-import { dbStateTodoStore } from "./store/dbStateTodo";
-import { fileStateTodoStore } from "./store/fileStateTodo";
-import { fileWorkerStateTodoStore } from "./store/fileWorkerStateTodo";
-import { type IStateTodoStore } from "./store/IStateTodoStore";
-import { memoryStateTodoStore } from "./store/memoryStateTodo";
+import { dbStateTodoStore } from "../core/db/repository/impl/stateTodoRepository";
+import { type IStateTodoStore } from "../core/db/repository/IStateTodoRepository";
 
 @Injectable()
 export class StateTodoService implements IStateTodoStore {
   private readonly stateTodoStore: IStateTodoStore;
 
   constructor(@InjectRepository(StateTodo) private readonly todoRepository: Repository<StateTodo>) {
-    switch (config.store.type) {
-      case "db":
-        this.stateTodoStore = dbStateTodoStore(todoRepository);
-        break;
-      case "memory":
-        this.stateTodoStore = memoryStateTodoStore();
-        break;
-      case "file":
-        this.stateTodoStore = fileStateTodoStore();
-        break;
-      case "fileworker":
-        this.stateTodoStore = fileWorkerStateTodoStore();
-        break;
-      case "mock":
-      default:
-        throw new UnexpectedError("Type de store inconnu.");
-    }
+    this.stateTodoStore = dbStateTodoStore(todoRepository);
   }
 
   async getDefault() {

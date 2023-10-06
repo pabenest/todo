@@ -12,10 +12,10 @@ import {
 } from "@nestjs/common";
 
 import { ZodValidationPipe } from "../common/pipes/ZodValidationPipe";
+import { CreateTodoDto, createTodoDtoSchema } from "../core/dto/todo/CreateTodoDto";
+import { type TodoDto } from "../core/dto/todo/TodoDto";
+import { UpdateTodoDto, updateTodoDtoSchema } from "../core/dto/todo/UpdateTodoDto";
 import { StateTodoService } from "../stateTodo/stateTodo.service";
-import { CreateTodoDto, createTodoDtoSchema } from "./dto/CreateTodoDto";
-import { type TodoDto } from "./dto/TodoDto";
-import { UpdateTodoDto, updateTodoDtoSchema } from "./dto/UpdateTodoDto";
 import { TodoService } from "./todo.service";
 
 @Controller("todo")
