@@ -1,4 +1,4 @@
-import { type WithId } from "@common/model/WithId";
+import { type WithId } from "@todo-pabenest/common";
 
 export interface TodoModel extends WithId {
   state: number;

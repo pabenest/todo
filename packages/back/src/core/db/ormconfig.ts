@@ -1,6 +1,7 @@
-import { config } from "@common/config";
 import path from "path";
 import { type ConnectionOptions } from "typeorm-seeding";
+
+import { config } from "../../config";
 
 // eslint-disable-next-line import/no-default-export
 export default {

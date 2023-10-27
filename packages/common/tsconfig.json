@@ -1,9 +1,5 @@
 {
   "extends": "@tsconfig/node20",
-  // "extends": [
-  //   "@tsconfig/node20",
-  //   "../../tsconfig.paths.json"
-  // ],
   "declarationMap": true,
   "sourceMap": true,
   "compilerOptions": {
@@ -12,5 +8,7 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "incremental": true,
-  }
+    "declaration": true,
+    "moduleResolution": "node"
+  },
 }

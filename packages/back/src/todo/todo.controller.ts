@@ -11,10 +11,10 @@ import {
   UsePipes,
 } from "@nestjs/common";
 
-import { ZodValidationPipe } from "../common/pipes/ZodValidationPipe";
 import { CreateTodoDto, createTodoDtoSchema } from "../core/dto/todo/CreateTodoDto";
 import { type TodoDto } from "../core/dto/todo/TodoDto";
 import { UpdateTodoDto, updateTodoDtoSchema } from "../core/dto/todo/UpdateTodoDto";
+import { ZodValidationPipe } from "../core/pipes/ZodValidationPipe";
 import { StateTodoService } from "../stateTodo/stateTodo.service";
 import { TodoService } from "./todo.service";
 
