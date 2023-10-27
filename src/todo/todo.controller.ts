@@ -37,8 +37,10 @@ export class TodoController {
   }
 
   @Put(":id")
-  @UsePipes(new ZodValidationPipe(updateTodoDtoSchema))
-  async update(@Param("id", ParseIntPipe) id: number, @Body() partialTodo: UpdateTodoDto) {
+  async update(
+    @Param("id", ParseIntPipe) id: number,
+    @Body(new ZodValidationPipe(updateTodoDtoSchema)) partialTodo: UpdateTodoDto,
+  ) {
     console.log("update:", partialTodo);
     await this.todoService.update(id, {
       //toModel(todo) (partial)
@@ -62,12 +64,9 @@ export class TodoController {
 
   @Get()
   async getAll() {
-    console.log("getAll todo");
-    const states = await this.stateTodoService.getAll();
     const todos = (await this.todoService.getAll()).map<TodoDto>(model => ({
-      //toDto(model)
       id: model.id,
-      state: states.find(state => state.id === model.state)!,
+      state: model.state,
       value: model.value,
     }));
     return todos;

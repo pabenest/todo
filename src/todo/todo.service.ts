@@ -55,6 +55,9 @@ export class TodoService {
     return (
       await this.todoRepository.find({
         relations: ["state"],
+        order: {
+          id: "ASC",
+        },
       })
     ).map(todo => ({
       id: todo.id,
