@@ -1,0 +1,42 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "todomvc-common/base.css";
+@import "todomvc-app-css/index.css";
+
+
+.todo-list li .detail {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 40px;
+  bottom: 0;
+  width: 40px;
+  height: 40px;
+  margin: auto 0;
+  font-size: 30px;
+  color: #949494;
+  transition: color 0.2s ease-out;
+}
+
+.todo-list li:hover .detail {
+  display: flex;
+}
+
+.todo-list li .detail::after, .todo-list li .destroy::after {
+  cursor: pointer;
+}
+
+.todo-list li:hover .detail::after {
+  content: "→";
+}
+.todo-list li:hover .detail:focus, .todo-list li:hover .detail:hover {
+  color: #cc9a9a;
+}
+
+.todo-list li .toggle:indeterminate+label {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:bx='https://boxy-svg.com' viewBox='-10 -18 100 135' width='40' height='40'%3E%3Cdefs%3E%3Cstyle bx:fonts='Aladin'%3E@import url(https://fonts.googleapis.com/css2%3Ffamily=Aladin%253Aital%252Cwght%25400%252C400&amp;display=swap);%3C/style%3E%3C/defs%3E%3Ccircle cx='50' cy='50' r='50' fill='none' stroke='%23949494' stroke-width='3'/%3E%3Ctext style='fill: rgb(51, 51, 51);font-family: Aladin;font-size: 66px;font-weight: 700;white-space: pre;text-anchor: middle;' x='50.909' y='70.265'%3E%3F%3C/text%3E%3C/svg%3E");
+}
+
+.todo-list li.editing select.edit {
+  margin-top: .3em;
+}

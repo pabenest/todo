@@ -24,8 +24,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 
-dist/*
+**/dist/*
 !**/.gitkeep
 
 # app
 store.json
+

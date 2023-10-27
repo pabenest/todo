@@ -3,6 +3,7 @@
     "editorconfig.editorconfig",
     "dbaeumer.vscode-eslint",
     "vscode-icons-team.vscode-icons",
-    "Postman.postman-for-vscode"
+    "Postman.postman-for-vscode",
+    "angular.ng-template",
   ],
 }
