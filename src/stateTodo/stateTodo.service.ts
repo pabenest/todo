@@ -5,10 +5,8 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
-import { type IStateTodoStore } from "../core/db/repository/IStateTodoRepository";
-
 @Injectable()
-export class StateTodoService implements IStateTodoStore {
+export class StateTodoService {
   constructor(@InjectRepository(StateTodo) private readonly stateTodoRepository: Repository<StateTodo>) {}
 
   async getDefault() {
