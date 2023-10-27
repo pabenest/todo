@@ -34,6 +34,8 @@ export class StateTodoController {
     await this.stateTodoService.update(id, {
       isDefault: stateTodo.isDefault,
       value: stateTodo.value,
+      isEnd: stateTodo.isEnd,
+      isStart: stateTodo.isStart,
     });
   }
 

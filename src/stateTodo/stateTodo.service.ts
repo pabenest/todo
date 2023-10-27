@@ -28,6 +28,7 @@ export class StateTodoService implements IStateTodoStore {
   }
 
   async add(instance: Omit<StateTodoModel, "id">) {
+    // TODO: check if default is true, if true, set others to false or throw error
     await this.stateTodoStore.add(instance);
   }
   async getAll() {
@@ -55,6 +56,8 @@ export class StateTodoService implements IStateTodoStore {
       }
       // on continue cas normal
     }
+
+    //TODO: check isStart and isEnd are not both true
 
     // -------- cas normal
     await this.stateTodoStore.update(id, instance);

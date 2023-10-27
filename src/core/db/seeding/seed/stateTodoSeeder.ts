@@ -11,10 +11,10 @@ export default class CreateStateTodos implements Seeder {
     const hasStateTodos = await repo.count();
     if (hasStateTodos) return;
 
-    await connection.getRepository(StateTodo).save([
-      { value: "A faire", isDefault: true },
-      { value: "A compléter", isDefault: false },
-      { value: "Terminé", isDefault: false },
+    await repo.save([
+      { value: "A faire", isDefault: true, isStart: true, isEnd: false },
+      { value: "A compléter", isDefault: false, isStart: false, isEnd: false },
+      { value: "Terminé", isDefault: false, isStart: false, isEnd: true },
     ]);
   }
 }

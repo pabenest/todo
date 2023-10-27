@@ -6,5 +6,7 @@ export interface TodoModel extends WithId {
 }
 export interface StateTodoModel extends WithId {
   isDefault: boolean;
+  isEnd: boolean;
+  isStart: boolean;
   value: string;
 }

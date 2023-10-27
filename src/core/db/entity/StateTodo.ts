@@ -15,4 +15,10 @@ export class StateTodo {
 
   @OneToMany(() => Todo, todo => todo.state, { eager: true })
   todos!: Todo[];
+
+  @Column("bool")
+  isEnd!: boolean;
+
+  @Column("bool")
+  isStart!: boolean;
 }

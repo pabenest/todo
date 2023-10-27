@@ -21,12 +21,20 @@ export const dbStateTodoStore = ((stateTodoRepository: Repository<StateTodo>): I
   },
   async getAll() {
     const entities = await stateTodoRepository.find();
-    return entities.map(x => ({ id: x.id, value: x.value, isDefault: x.isDefault }));
+    return entities.map(x => ({
+      id: x.id,
+      value: x.value,
+      isDefault: x.isDefault,
+      isStart: x.isStart,
+      isEnd: x.isEnd,
+    }));
   },
   async update(id, stateTodo) {
     await stateTodoRepository.update(id, {
       value: stateTodo.value,
       isDefault: stateTodo.isDefault,
+      isStart: stateTodo.isStart,
+      isEnd: stateTodo.isEnd,
     });
   },
   async remove(id) {
@@ -46,6 +54,8 @@ export const dbStateTodoStore = ((stateTodoRepository: Repository<StateTodo>): I
       id: defaultState.id,
       value: defaultState.value,
       isDefault: true,
+      isStart: defaultState.isStart,
+      isEnd: defaultState.isEnd,
     };
   },
   async setDefault(id) {
