@@ -5,51 +5,84 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
-import { dbStateTodoStore } from "../core/db/repository/impl/stateTodoRepository";
 import { type IStateTodoStore } from "../core/db/repository/IStateTodoRepository";
 
 @Injectable()
 export class StateTodoService implements IStateTodoStore {
-  private readonly stateTodoStore: IStateTodoStore;
-
-  constructor(@InjectRepository(StateTodo) private readonly todoRepository: Repository<StateTodo>) {
-    this.stateTodoStore = dbStateTodoStore(todoRepository);
-  }
+  constructor(@InjectRepository(StateTodo) private readonly stateTodoRepository: Repository<StateTodo>) {}
 
   async getDefault() {
-    return await this.stateTodoStore.getDefault();
+    const defaultState = await this.stateTodoRepository.findOne({ where: { isDefault: true } });
+    if (!defaultState) throw new Error("No default state found. Please seed the database.");
+
+    return {
+      id: defaultState.id,
+      value: defaultState.value,
+      isDefault: true,
+      isStart: defaultState.isStart,
+      isEnd: defaultState.isEnd,
+    };
   }
   async setDefault(id: number) {
-    await this.stateTodoStore.setDefault(id);
+    const stateTodos = await this.getAll();
+    const hasStateTodo = stateTodos.find(stateTodo => stateTodo.id === id);
+    if (hasStateTodo) {
+      //les autres ne sont plus par défaut.
+      for (const stateTodo of stateTodos) {
+        if (stateTodo.id !== id) {
+          stateTodo.isDefault = false;
+        } else {
+          stateTodo.isDefault = true;
+        }
+      }
+      await this.stateTodoRepository.save(stateTodos);
+    } else {
+      throw new AppError("L'identifiant de l'état n'existe pas.");
+    }
   }
   async findOne(id: number) {
-    console.log("test:");
-    return await this.stateTodoStore.findOne(id);
+    return this.stateTodoRepository.findOne({
+      where: {
+        id,
+      },
+    });
   }
 
-  async add(instance: Omit<StateTodoModel, "id">) {
+  async add(stateTodo: Omit<StateTodoModel, "id">) {
     // TODO: check if default is true, if true, set others to false or throw error
-    await this.stateTodoStore.add(instance);
+    await this.stateTodoRepository.insert({
+      value: stateTodo.value,
+      isDefault: stateTodo.isDefault,
+      isEnd: false,
+      isStart: false,
+    });
   }
   async getAll() {
-    return await this.stateTodoStore.getAll();
+    const entities = await this.stateTodoRepository.find();
+    return entities.map(x => ({
+      id: x.id,
+      value: x.value,
+      isDefault: x.isDefault,
+      isStart: x.isStart,
+      isEnd: x.isEnd,
+    }));
   }
-  async update(id: number, instance: Partial<Omit<StateTodoModel, "id">>) {
+  async update(id: number, stateTodo: Partial<Omit<StateTodoModel, "id">>) {
     const stateTodos = await this.getAll();
     // if instance.isDefault = false et qu'il était à true, on doit throw une erreur
     // if instance.isDefault = true et qu'il était à false, on doit mettre à false les autres
     // if instance.isDefault = undefined, on update normalement
 
-    if (instance.isDefault === false) {
+    if (stateTodo.isDefault === false) {
       const stateTodo = stateTodos.find(stateTodo => stateTodo.id === id);
       if (stateTodo?.isDefault === true) {
         throw new AppError("Can't set default to false on default state");
       }
       // fallback cas normal
-    } else if (instance.isDefault === true) {
-      for (const stateTodo of stateTodos) {
-        if (stateTodo.id !== id) {
-          await this.stateTodoStore.update(id, {
+    } else if (stateTodo.isDefault === true) {
+      for (const currentStateTodo of stateTodos) {
+        if (currentStateTodo.id !== id) {
+          await this.stateTodoRepository.update(id, {
             isDefault: false,
           });
         }
@@ -60,9 +93,14 @@ export class StateTodoService implements IStateTodoStore {
     //TODO: check isStart and isEnd are not both true
 
     // -------- cas normal
-    await this.stateTodoStore.update(id, instance);
+    await this.stateTodoRepository.update(id, stateTodo);
   }
   async remove(id: number) {
-    await this.stateTodoStore.remove(id);
+    const stateTodo = await this.stateTodoRepository.findOneOrFail({
+      where: { id },
+    });
+
+    console.log("id a supp" + id);
+    await this.stateTodoRepository.remove(stateTodo);
   }
 }
