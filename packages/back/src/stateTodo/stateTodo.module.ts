@@ -1,7 +1,7 @@
-import { StateTodo } from "@core/db/entity/StateTodo";
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
+import { StateTodo } from "../core/db/entity/StateTodo";
 import { StateTodoController } from "./stateTodo.controller";
 import { StateTodoService } from "./stateTodo.service";
 

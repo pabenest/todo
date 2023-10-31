@@ -1,9 +1,10 @@
-import { AppError } from "@common/error";
-import { StateTodo } from "@core/db/entity/StateTodo";
-import { type StateTodoModel } from "@core/model/Todo";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+import { AppError } from "@todo-pabenest/common";
 import { Repository } from "typeorm";
+
+import { StateTodo } from "../core/db/entity/StateTodo";
+import { type StateTodoModel } from "../core/model/Todo";
 
 @Injectable()
 export class StateTodoService {

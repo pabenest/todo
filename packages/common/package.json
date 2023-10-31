@@ -2,13 +2,7 @@
   "name": "@todo-pabenest/common",
   "version": "1.0.0",
   "description": "Common package for todo app",
-  "exports": {
-    ".": "./src/index.ts",
-    "./*": "./src/*/index.ts"
-  },
-  "files": [
-    "src/**"
-  ],
+  "main": "dist/index.js",
   "scripts": {
     "build": "tsc -p ."
   },

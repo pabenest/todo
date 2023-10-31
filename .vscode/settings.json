@@ -17,5 +17,13 @@
   "[javascriptreact]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
-  "typescript.preferences.quoteStyle": "single"
+  "typescript.preferences.quoteStyle": "single",
+  "json.schemas": [
+    {
+      "fileMatch": [
+        "turbo.json"
+      ],
+      "url": "https://turbo.build/schema.json"
+    },
+  ]
 }

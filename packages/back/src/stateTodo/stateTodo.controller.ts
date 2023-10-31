@@ -1,7 +1,7 @@
-import { StateTodoModel } from "@core/model/Todo";
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, UsePipes } from "@nestjs/common";
 
 import { UpdateStateTodoDto, updateStateTodoDtoSchema } from "../core/dto/statetodo/UpdateStateTodoDto";
+import { StateTodoModel } from "../core/model/Todo";
 import { ZodValidationPipe } from "../core/pipes/ZodValidationPipe";
 import { StateTodoService } from "./stateTodo.service";
 

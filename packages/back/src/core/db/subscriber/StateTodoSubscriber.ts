@@ -1,4 +1,4 @@
-import { UnexpectedRepositoryError } from "@todo-pabenest/common/error";
+import { UnexpectedRepositoryError } from "@todo-pabenest/common";
 import { type EntitySubscriberInterface, EventSubscriber, type RemoveEvent } from "typeorm";
 
 import { StateTodo } from "../entity/StateTodo";

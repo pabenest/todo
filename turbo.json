@@ -1,0 +1,28 @@
+{
+  "pipeline": {
+    "build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "src/**/*.ts",
+        "src/**/*.css",
+        "src/**/*.html"
+      ],
+      "outputs": [
+        ".dist/**",
+        "out-tsc/**"
+      ]
+    },
+    "dev": {
+      "cache": false
+    },
+    "lint": {
+      "outputs": [],
+      "inputs": [
+        ".eslintrc.js",
+        "src/**/*.ts"
+      ]
+    }
+  }
+}

@@ -1,8 +1,9 @@
-import { Todo } from "@core/db/entity/Todo";
-import { type TodoModel } from "@core/model/Todo";
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
+
+import { Todo } from "../core/db/entity/Todo";
+import { type TodoModel } from "../core/model/Todo";
 
 @Injectable()
 export class TodoService {

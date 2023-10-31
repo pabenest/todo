@@ -1,14 +1,14 @@
 {
   "extends": "@tsconfig/node20",
-  "declarationMap": true,
-  "sourceMap": true,
   "compilerOptions": {
     "outDir": "./dist",
+    // "noEmit": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "incremental": true,
     "declaration": true,
-    "moduleResolution": "node"
+    "declarationMap": true,
+    "sourceMap": true
   },
 }

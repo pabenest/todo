@@ -7,8 +7,10 @@
     "packages/*"
   ],
   "scripts": {
-    "dev:front": "yarn workspace @todo-pabenest/front start",
-    "dev:back": "yarn workspace @todo-pabenest/back dev"
+    "build": "turbo run build",
+    "dev:front": "turbo run dev --filter=front",
+    "dev:back": "turbo run dev --filter=front",
+    "dev": "turbo run dev --filter=!common"
   },
   "author": "",
   "license": "ISC",
@@ -26,6 +28,7 @@
     "source-map-support": "^0.5.21",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",
+    "turbo": "^1.10.16",
     "typescript": "~5.1.3"
   }
 }

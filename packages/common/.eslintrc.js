@@ -4,7 +4,8 @@ module.exports = {
     project: true,
     tsconfigRootDir: __dirname,
   },
-  plugins: ['prettier', '@typescript-eslint', 'unused-imports', 'simple-import-sort', 'typescript-sort-keys'],
+  plugins: ['prettier', '@typescript-eslint', 'unused-imports', 'simple-import-sort', 'typescript-sort-keys'
+  ],
   extends: [
     'eslint:recommended',
     // default rules for import
@@ -44,8 +45,16 @@ module.exports = {
     "import/no-useless-path-segments": "warn",
     "import/no-absolute-path": "warn",
     "import/no-named-as-default": "off",
-    "import/consistent-type-specifier-style": ["error", "prefer-inline"],
-    "import/no-duplicates": ["error", { "prefer-inline": true }],
+    "import/consistent-type-specifier-style": [
+      "error",
+      "prefer-inline"
+    ],
+    "import/no-duplicates": [
+      "error",
+      {
+        "prefer-inline": true
+      }
+    ],
     "sort-import": "off",
     "prettier/prettier": [
       "error",

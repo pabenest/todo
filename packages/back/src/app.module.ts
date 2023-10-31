@@ -1,7 +1,7 @@
-import ormconfig from "@core/db/ormconfig";
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
+import ormconfig from "./core/db/ormconfig";
 import { StateTodoController } from "./stateTodo/stateTodo.controller";
 import { StateTodoModule } from "./stateTodo/stateTodo.module";
 import { StateTodoService } from "./stateTodo/stateTodo.service";
