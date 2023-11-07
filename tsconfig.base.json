@@ -3,12 +3,19 @@
     "baseUrl": ".",
     "paths": {
       "@todo-pabenest/common": [
-        "packages/common/src/index.ts"
+        "packages/common/src/"
       ]
     }
   },
+  "references": [
+    {
+      "path": "./packages/common"
+    }
+  ],
+  "include": [],
   "exclude": [
     "node_modules",
-    "tmp"
+    "tmp",
+    "**/dist"
   ]
 }

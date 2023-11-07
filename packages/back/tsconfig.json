@@ -1,16 +1,16 @@
 {
   "extends": [
     "@tsconfig/node20",
-    "../../tsconfig.base.json"
+    // "../../tsconfig.base.json"
   ],
-  "declarationMap": true,
-  "sourceMap": true,
   "compilerOptions": {
     "outDir": "./dist",
-    "rootDir": "src/",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "incremental": true
-  }
+  },
+  "include": [
+    "src/**/*"
+  ]
 }

@@ -2,13 +2,15 @@
   "extends": "@tsconfig/node20",
   "compilerOptions": {
     "outDir": "./dist",
-    // "noEmit": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "incremental": true,
     "declaration": true,
     "declarationMap": true,
-    "sourceMap": true
+    "sourceMap": true,
   },
+  "include": [
+    "src/**/*"
+  ]
 }

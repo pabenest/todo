@@ -10,6 +10,18 @@
     "lint": "ng lint"
   },
   "private": true,
+  "workspaces": {
+    "nohoist": [
+      "@angular/cli",
+      "@angular/cli/**",
+      "@angular/compiler-cli",
+      "@angular/compiler-cli/**",
+      "@isaacs/cliui",
+      "@isaacs/cliui/**",
+      "**/@isaacs/cliui",
+      "**/@isaacs/cliui/**"
+    ]
+  },
   "dependencies": {
     "@todo-pabenest/common": "*",
     "@angular/animations": "^16.2.0",

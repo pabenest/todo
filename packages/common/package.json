@@ -4,7 +4,8 @@
   "description": "Common package for todo app",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc -p ."
+    "build": "rimraf dist && tsc",
+    "dev": "tsc -w"
   },
   "keywords": [],
   "author": "",
