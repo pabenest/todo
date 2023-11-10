@@ -26,7 +26,8 @@
       "url": "https://turbo.build/schema.json"
     },
   ],
-  "search.exclude": {
-    "**/dist": true
-  }
+  "typescript.preferences.autoImportFileExcludePatterns": [
+    "packages/**/dist/**/*",
+    "**/packages/**/dist/**/*",
+  ]
 }

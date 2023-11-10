@@ -12,5 +12,7 @@
     "node_modules",
     "**/dist",
     "**/node_modules",
+    "packages/**/dist/**/*",
+    "**/packages/**/dist/**/*"
   ]
 }
