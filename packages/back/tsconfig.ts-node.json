@@ -1,0 +1,59 @@
+{
+    "compilerOptions": {
+        "lib": [
+            "es2023"
+        ],
+        "module": "node16",
+        "target": "es2022",
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "moduleResolution": "node16",
+        "baseUrl": "../..",
+        "paths": {
+            "@todo-pabenest/common": [
+                "packages/common/src/"
+            ]
+        },
+        "outDir": "./dist",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true,
+        "incremental": true
+    },
+    "files": [
+        "./src/app.module.ts",
+        "./src/config.ts",
+        "./src/main.ts",
+        "./src/core/Travailleur.ts",
+        "./src/core/db/ormconfig.ts",
+        "./src/core/db/entity/StateTodo.ts",
+        "./src/core/db/entity/Todo.ts",
+        "./src/core/db/seeding/seed/stateTodoSeeder.ts",
+        "./src/core/db/subscriber/StateTodoSubscriber.ts",
+        "./src/core/dto/statetodo/CreateStateTodoDto.ts",
+        "./src/core/dto/statetodo/StateTodoDto.ts",
+        "./src/core/dto/statetodo/UpdateStateTodoDto.ts",
+        "./src/core/dto/todo/ChangeStateDto.ts",
+        "./src/core/dto/todo/CreateTodoDto.ts",
+        "./src/core/dto/todo/TodoDto.ts",
+        "./src/core/dto/todo/UpdateTodoDto.ts",
+        "./src/core/model/Todo.ts",
+        "./src/core/pipes/ZodValidationPipe.ts",
+        "./src/stateTodo/stateTodo.controller.ts",
+        "./src/stateTodo/stateTodo.module.ts",
+        "./src/stateTodo/stateTodo.service.ts",
+        "./src/todo/todo.controller.ts",
+        "./src/todo/todo.module.ts",
+        "./src/todo/todo.service.ts"
+    ],
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        "../../node_modules",
+        "../../tmp",
+        "../../**/dist"
+    ]
+}

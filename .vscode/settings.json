@@ -25,5 +25,8 @@
       ],
       "url": "https://turbo.build/schema.json"
     },
-  ]
+  ],
+  "search.exclude": {
+    "**/dist": true
+  }
 }

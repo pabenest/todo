@@ -1,7 +1,7 @@
 {
   "extends": [
     "@tsconfig/node20",
-    // "../../tsconfig.base.json"
+    "../../tsconfig.base.json"
   ],
   "compilerOptions": {
     "outDir": "./dist",
@@ -12,5 +12,11 @@
   },
   "include": [
     "src/**/*"
-  ]
+  ],
+  "ts-node": {
+    "transpileOnly": true,
+    "require": [
+      "tsconfig-paths/register"
+    ]
+  }
 }
