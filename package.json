@@ -8,8 +8,9 @@
   ],
   "scripts": {
     "build": "turbo run build",
-    "dev:front": "turbo run dev --filter=!back --parallel",
-    "dev:back": "turbo run dev --filter=!front --parallel",
+    "dev:front-next": "turbo run dev --filter=!back --filter=!front --parallel",
+    "dev:front": "turbo run dev --filter=!back --filter=!front-next --parallel",
+    "dev:back": "turbo run dev --filter=!front-* --parallel",
     "dev": "turbo run dev --parallel",
     "seed:run": "yarn workspace @todo-pabenest/back seed:run"
   },

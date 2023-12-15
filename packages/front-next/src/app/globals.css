@@ -1,0 +1,6 @@
+@import "todomvc-common/base.css";
+@import "todomvc-app-css/index.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
